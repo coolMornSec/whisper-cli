@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 import { auditTaskWorkspace } from './mas-audit.mjs';
 import { transitionTaskState } from './mas-controller.mjs';
+import { renderRuntimeFiles } from './mas-runtime-store.mjs';
 import { renderSupportFiles } from './mas-support.mjs';
 import { renderTaskFiles } from './mas-task-files.mjs';
 import { toPosix } from './mas-utils.mjs';
@@ -55,7 +56,10 @@ export async function scaffoldTaskWorkspace({
 
   const supportResult = await writeFileMap(rootDir, renderSupportFiles());
   const taskFileMap = Object.fromEntries(
-    Object.entries(renderTaskFiles(taskId, title, goal)).map(([relativePath, content]) => [
+    Object.entries({
+      ...renderTaskFiles(taskId, title, goal),
+      ...renderRuntimeFiles(taskId)
+    }).map(([relativePath, content]) => [
       toPosix(join('tasks', taskId, relativePath)),
       content
     ])

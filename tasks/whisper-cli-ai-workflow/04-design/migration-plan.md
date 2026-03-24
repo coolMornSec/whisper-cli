@@ -1,9 +1,9 @@
-# Migration Plan
+# 迁移计划
 
-## Migration Steps
-- Replace the old document-only scaffold with a complete tasks/<task-id>/ workspace.
-- Validate the repository against a default sample task.
-- Add a transition controller so state cannot be advanced by ad hoc edits.
+## 迁移步骤
+- 用完整的 tasks/<task-id>/ 工作区替换旧的纯文档脚手架。
+- 使用默认示例任务对仓库执行校验。
+- 增加状态流转控制器，避免通过临时编辑推进状态。
 
-## Rollback Notes
-- If a migration breaks policy validation, revert the workspace to the last validated task state before continuing.
+## 回滚说明
+- 如果迁移破坏策略校验，应先将工作区回退到上一个已验证状态，再继续推进。

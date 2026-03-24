@@ -1,8 +1,7 @@
-# Constraints
+# 约束条件
 
-- Prototype must be approved before API design is finalized.
-- API review must pass before rules are frozen and build can proceed.
-- Tests must be designed and reviewed before implementation starts.
-- The case must stay small enough for one team to ship in one sprint.
-- Authentication, outbound email, and analytics are explicitly out of scope for the first release.
-- Ticket state transitions must remain auditable.
+- 原型必须先通过评审，API 设计才能最终定稿。
+
+- API 评审通过后，规则才能冻结，构建才能推进。
+
+- 实现开始前，测试必须先设计并完成评审。

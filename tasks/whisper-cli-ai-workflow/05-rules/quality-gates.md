@@ -1,6 +1,6 @@
-# Quality Gates
+# 质量门禁
 
-## Gate Matrix
+## 门禁矩阵
 - REQUIREMENT_REVIEW -> TASK_PLANNED
 - UI_REVIEW -> API_DESIGNED
 - API_REVIEW -> RULES_FROZEN

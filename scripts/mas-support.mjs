@@ -2,15 +2,15 @@ import { renderDeliverableContractsPolicy } from './mas-contracts.mjs';
 
 export function renderSupportFiles() {
   return {
-    'shared/templates/task-workspace.template.md': `# Task Workspace Template
+    'shared/templates/task-workspace.template.md': `# 任务工作区模板
 
-## Directory Contract
-- Every task must live under \`tasks/<task-id>/\`.
-- Stage outputs must be stored in the fixed \`00\` to \`09\` directories.
-- \`state.json\` records runtime execution state and \`manifest.json\` records static task policy.
-- \`AGENT.md\` defines the case-level execution contract for all participating agents.
+## 目录约定
+- 每个任务都必须放在 \`tasks/<task-id>/\` 下。
+- 阶段产物必须存放在固定的 \`00\` 到 \`09\` 目录中。
+- \`state.json\` 记录运行时执行状态，\`manifest.json\` 记录静态任务策略。
+- \`AGENT.md\` 定义所有参与 Agent 的任务级执行约定。
 
-## Core Deliverables
+## 核心交付物
 - \`AGENT.md\`
 - \`01-spec/spec.md\`
 - \`04-design/prototype.md\`
@@ -19,53 +19,53 @@ export function renderSupportFiles() {
 - \`06-tests/test-cases.md\`
 - \`09-audit/review.md\`
 `,
-    'shared/templates/AGENT.template.md': `# Agent Execution Contract
+    'shared/templates/AGENT.template.md': `# Agent 执行约定
 
-## Mission
-- Describe the business objective of this task in one concise paragraph.
+## 任务使命
+- 用一段简洁的话描述本任务的业务目标。
 
-## Authority Order
-- Follow this precedence strictly: user request -> approved spec -> passed review -> manifest.json -> state.json -> AGENT.md -> local execution notes.
+## 权限优先级
+- 严格遵循以下优先级：用户请求 -> 已批准 spec -> 已通过评审 -> manifest.json -> state.json -> AGENT.md -> 本地执行记录。
 
-## Department Role Map
-- \`zhongshu\`: clarify intent, scope, non-goals, and acceptance criteria.
-- \`menxia\`: review only, decide pass or reject, never silently rewrite deliverables.
-- \`shangshu\`: coordinate progression, freeze outputs, and own rollback orchestration.
-- \`libu_task_breakdown\`: define workstreams, dependencies, and ownership.
-- \`libu_prototype\`: define prototype structure and interaction states.
-- \`gongbu\`: produce API, data, and build outputs.
-- \`xingbu\`: define rules, tests, and verification evidence.
-- \`yushitai\`: audit independently, notify shangshu, and recommend rollback when needed.
+## 部门角色映射
+- \`zhongshu\`：澄清意图、范围、非目标和验收标准。
+- \`menxia\`：只负责评审，给出通过或驳回结论，不能静默重写交付物。
+- \`shangshu\`：协调推进、冻结产物，并负责回退编排。
+- \`libu_task_breakdown\`：定义工作流拆分、依赖关系和责任归属。
+- \`libu_prototype\`：定义原型结构和交互状态。
+- \`gongbu\`：产出 API、数据和构建产物。
+- \`xingbu\`：定义规则、测试和验证证据。
+- \`yushitai\`：独立审计、通知 shangshu，并在需要时建议回退。
 
-## Read Inputs
-- Always read \`manifest.json\`, \`state.json\`, \`AGENT.md\`, and the upstream approved deliverables for the current state before writing.
+## 读取输入
+- 开始写入前，始终先读取 \`manifest.json\`、\`state.json\`、\`AGENT.md\` 以及当前状态已批准的上游交付物。
 
-## Allowed Outputs
-- Write only inside the paths granted by \`state.json.allowed_write_paths\`.
-- Do not modify deliverables owned by another department unless the workflow has routed the task back to that department.
+## 允许输出
+- 只允许在 \`state.json.allowed_write_paths\` 授权的路径内写入。
+- 除非工作流已将任务路由回对应部门，否则不要修改其他部门拥有的交付物。
 
-## Stage Execution Rules
-- Do not start work for the next stage until the current entry gate has passed.
-- Treat review documents with \`Decision: pending\` as blocked, not approved.
-- Treat \`approved_artifacts\` as derived truth, never as a field to force manually.
+## 阶段执行规则
+- 当前入口门禁未通过前，不要启动下一阶段工作。
+- 将 \`结论: 待定\` 的评审文档视为阻塞，而不是已批准。
+- 将 \`approved_artifacts\` 视为推导结果，绝不能手工强行改值。
 
-## Escalation Rules
-- Escalate to shangshu when inputs conflict, a gate fails, required ownership is unclear, or execution would exceed the allowed write paths.
-- Stop and wait when a required review or audit decision is still pending.
+## 升级规则
+- 当输入冲突、门禁失败、责任归属不清或执行将超出授权写入范围时，升级给 shangshu。
+- 当必需的评审或审计结论仍为待定时，停止并等待。
 
-## Audit Hooks
-- Leave clear evidence for yushitai in the expected deliverables and \`agent-log.md\`.
-- Never edit \`09-audit/\` unless the active state explicitly grants that scope.
+## 审计钩子
+- 在预期交付物和 \`agent-log.md\` 中为 yushitai 留下清晰证据。
+- 除非当前激活状态明确授权，否则不要编辑 \`09-audit/\`。
 
-## Case Overrides
-- List only case-specific constraints here. If none exist, state "No case overrides."
+## 任务覆盖项
+- 这里只列任务特定约束。如果没有，写“无任务覆盖项”。
 
-## Completion Protocol
-- Before handoff, confirm inputs used, outputs changed, unresolved risks, and whether the next gate should pass or remain blocked.
+## 完成交接协议
+- 交接前，确认使用过的输入、变更过的输出、未解决风险，以及下一道门禁应通过还是继续阻塞。
 `,
-    'shared/policies/department-write-scope.md': `# Department Write Scope
+    'shared/policies/department-write-scope.md': `# 部门写入范围
 
-## Write Boundaries
+## 写入边界
 - zhongshu: \`00-intake/\`, \`01-spec/\`
 - menxia: \`02-review/\`
 - shangshu: \`03-plan/\`, \`AGENT.md\`, \`agent-log.md\`
@@ -76,49 +76,49 @@ export function renderSupportFiles() {
 - yushitai: \`09-audit/\`
 `,
     'shared/policies/deliverable-contracts.md': renderDeliverableContractsPolicy(),
-    'shared/policies/agent-document-standard.md': `# Agent Document Standard
+    'shared/policies/agent-document-standard.md': `# Agent 文档标准
 
-## Purpose
-- \`AGENT.md\` is the case-level execution contract that binds all participating agents to the same authority order, stage rules, escalation rules, and audit hooks.
+## 目的
+- \`AGENT.md\` 是任务级执行约定，用来把所有参与 Agent 绑定到同一套权限优先级、阶段规则、升级规则和审计钩子上。
 
-## Ownership
-- Default owner: \`shangshu\`
-- Review contributors: all departments may propose updates through the routed workflow, but direct edits must stay inside the currently allowed write paths.
+## 归属
+- 默认负责人：\`shangshu\`
+- 评审参与方：所有部门都可以通过路由后的流程提出更新建议，但直接编辑必须限制在当前允许写入路径内。
 
-## Required Structure
-- The document must contain the fixed sections defined in \`shared/templates/AGENT.template.md\`.
-- The document must explicitly mention all eight departments, \`state.json\`, \`manifest.json\`, and \`AGENT.md\`.
+## 必需结构
+- 文档必须包含 \`shared/templates/AGENT.template.md\` 中定义的固定章节。
+- 文档必须明确提到八个部门、\`state.json\`、\`manifest.json\` 和 \`AGENT.md\`。
 
-## Enforcement Rules
-- A task workspace is invalid if \`AGENT.md\` is missing, missing required sections, or omits department role mapping and escalation behavior.
-- Case-specific exceptions belong only in \`## Case Overrides\`; they must not silently change workflow order or department write scopes.
+## 执行规则
+- 如果 \`AGENT.md\` 缺失、缺少必填章节，或遗漏部门角色映射与升级行为，则任务工作区无效。
+- 任务特定例外只能写在 \`## 任务覆盖项\` 中，不能静默改变工作流顺序或部门写入范围。
 
-## Usage Rules
-- Every agent must read \`AGENT.md\` before starting work on a case.
-- If \`AGENT.md\` conflicts with \`manifest.json\` or \`state.json\`, the agent must escalate to shangshu instead of choosing locally.
+## 使用规则
+- 每个 Agent 在开始处理任务前都必须阅读 \`AGENT.md\`。
+- 如果 \`AGENT.md\` 与 \`manifest.json\` 或 \`state.json\` 冲突，Agent 必须升级给 shangshu，而不是自行判断。
 `,
-    'shared/prompts/department-prompts.md': `# Department Prompt Baseline
+    'shared/prompts/department-prompts.md': `# 部门提示词基线
 
-## Shared Requirement
-- Read \`AGENT.md\`, \`manifest.json\`, and \`state.json\` before writing.
+## 共同要求
+- 写入前先读取 \`AGENT.md\`、\`manifest.json\` 和 \`state.json\`。
 
 ## zhongshu
-- Clarify requirements, acceptance criteria, non-goals, and upstream context before execution starts.
+- 在执行开始前澄清需求、验收标准、非目标和上游上下文。
 
 ## menxia
-- Output review findings, pass or reject decisions, and explicit return instructions without rewriting deliverables directly.
+- 输出评审发现、通过或驳回结论，以及明确的回退说明，但不要直接重写交付物。
 
 ## shangshu
-- Advance state, freeze approved outputs, coordinate rollback, manage active execution scopes, and keep \`AGENT.md\` aligned with the case contract.
+- 推进状态、冻结已批准产物、协调回退、管理当前执行范围，并保持 \`AGENT.md\` 与任务约定一致。
 
-## Execution Departments
-- Write only inside the allowed scope for the active state.
-- Do not modify deliverables owned by another department without a routed re-entry.
-- Escalate conflicts instead of resolving them ad hoc.
+## 执行部门
+- 只在当前激活状态允许的范围内写入。
+- 未经路由回流，不要修改其他部门拥有的交付物。
+- 遇到冲突要升级处理，而不是临时拍板。
 `,
-    'orchestrator/state-machine.md': `# State Machine
+    'orchestrator/state-machine.md': `# 状态机
 
-## Main Flow
+## 主流程
 \`\`\`text
 INTAKE
 -> SPEC_DRAFT
@@ -137,7 +137,7 @@ INTAKE
 -> DONE
 \`\`\`
 
-## Failure Recovery
+## 失败恢复
 \`\`\`text
 REQUIREMENT_REJECTED -> SPEC_DRAFT
 UI_REJECTED -> PROTOTYPE_DRAFT
@@ -147,35 +147,35 @@ VERIFY_FAILED -> BUILD_IN_PROGRESS
 AUDIT_FAILED -> TASK_PLANNED or BUILD_IN_PROGRESS
 \`\`\`
 `,
-    'orchestrator/routing-rules.md': `# Routing Rules
+    'orchestrator/routing-rules.md': `# 路由规则
 
-## Peer Deliberation
+## 平级协商
 - SPEC_DRAFT
 - REQUIREMENT_REVIEW
 - TASK_PLANNED
 - UI_REVIEW
 - API_REVIEW
 
-## Parallel Execution
+## 并行执行
 - BUILD_IN_PROGRESS
 - INTEGRATION_VERIFY
 
-## Freeze Points
+## 冻结点
 - UI_REVIEW
 - API_REVIEW
 - TEST_REVIEW
 `,
-    'orchestrator/role-permissions.md': `# Role Permissions
+    'orchestrator/role-permissions.md': `# 角色权限
 
-## Department Write Boundaries
-- zhongshu: intake and specification authoring
-- menxia: review and rejection decisions
-- shangshu: plan control, state progression, freeze management, and AGENT contract stewardship
-- libu_task_breakdown: planning decomposition and ownership definition
-- libu_prototype: prototype and interaction definition
-- gongbu: API, implementation, and data model delivery
-- xingbu: rules, tests, and verification evidence
-- yushitai: independent audit and escalation
+## 部门写入边界
+- zhongshu: intake 与规格编写
+- menxia: 评审与驳回决策
+- shangshu: 计划控制、状态推进、冻结管理和 AGENT 约定维护
+- libu_task_breakdown: 规划拆分与责任定义
+- libu_prototype: 原型与交互定义
+- gongbu: API、实现与数据模型交付
+- xingbu: 规则、测试与验证证据
+- yushitai: 独立审计与升级处理
 `
   };
 }

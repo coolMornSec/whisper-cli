@@ -1,17 +1,17 @@
-# Routing Rules
+# 路由规则
 
-## Peer Deliberation
+## 平级协商
 - SPEC_DRAFT
 - REQUIREMENT_REVIEW
 - TASK_PLANNED
 - UI_REVIEW
 - API_REVIEW
 
-## Parallel Execution
+## 并行执行
 - BUILD_IN_PROGRESS
 - INTEGRATION_VERIFY
 
-## Freeze Points
+## 冻结点
 - UI_REVIEW
 - API_REVIEW
 - TEST_REVIEW

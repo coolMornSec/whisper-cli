@@ -1,12 +1,12 @@
-# Task Workspace Template
+# 任务工作区模板
 
-## Directory Contract
-- Every task must live under `tasks/<task-id>/`.
-- Stage outputs must be stored in the fixed `00` to `09` directories.
-- `state.json` records runtime execution state and `manifest.json` records static task policy.
-- `AGENT.md` defines the case-level execution contract for all participating agents.
+## 目录约定
+- 每个任务都必须放在 `tasks/<task-id>/` 下。
+- 阶段产物必须存放在固定的 `00` 到 `09` 目录中。
+- `state.json` 记录运行时执行状态，`manifest.json` 记录静态任务策略。
+- `AGENT.md` 定义所有参与 Agent 的任务级执行约定。
 
-## Core Deliverables
+## 核心交付物
 - `AGENT.md`
 - `01-spec/spec.md`
 - `04-design/prototype.md`

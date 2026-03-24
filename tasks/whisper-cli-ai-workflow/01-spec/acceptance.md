@@ -1,6 +1,6 @@
-# Acceptance Criteria
+# 验收标准
 
-## Acceptance Checklist
-- Every required workspace file exists.
-- manifest.json and state.json remain consistent with workflow policy.
-- Workflow validation and tests pass.
+## 验收检查清单
+- 所有必需的工作区文件都已存在。
+- manifest.json 与 state.json 与工作流策略保持一致。
+- 工作流校验和测试全部通过。

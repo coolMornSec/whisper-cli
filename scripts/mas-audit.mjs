@@ -89,23 +89,23 @@ function pickRecommendedRollback(findings, currentState) {
 
 function renderFindings(findings) {
   if (findings.length === 0) {
-    return '- No active audit findings.';
+    return '- 当前没有活跃的审计发现。';
   }
 
   return findings
     .map(
       finding => `### ${finding.id}
-- Category: ${finding.category}
-- Severity: ${finding.severity}
-- Summary: ${finding.summary}
-- Recommended Rollback: ${finding.rollbackState}`
+- 类别: ${finding.category}
+- 严重级别: ${finding.severity}
+- 摘要: ${finding.summary}
+- 建议回退状态: ${finding.rollbackState}`
     )
     .join('\n\n');
 }
 
 function renderRisks(findings) {
   if (findings.length === 0) {
-    return '- No active audit risks.';
+    return '- 当前没有活跃的审计风险。';
   }
 
   return findings
@@ -121,6 +121,12 @@ function reviewDecisionForAudit(currentState, findings) {
     return 'pass';
   }
   return 'pending';
+}
+
+function formatDecision(decision) {
+  if (decision === 'pass') return '通过';
+  if (decision === 'reject') return '驳回';
+  return '待定';
 }
 
 async function readJson(filePath) {
@@ -139,30 +145,30 @@ async function writeAuditDocuments({ rootDir, taskId, findings, decision, recomm
 
   const followUpText =
     findings.length > 0
-      ? `- Return the task to ${recommendedRollbackState} and require shangshu to coordinate remediation.`
-      : '- No rollback required at this time.';
+      ? `- 将任务回退到 ${recommendedRollbackState}，并要求 shangshu 协调修复。`
+      : '- 当前无需回退。';
   const escalationText =
     findings.length > 0
-      ? `- Notify ${escalationTarget} immediately and pause downstream execution until the rollback decision is applied.`
-      : '- No escalation required.';
+      ? `- 立即通知 ${escalationTarget}，并在回退决定落实前暂停下游执行。`
+      : '- 当前无需升级。';
 
   await writeFile(
     reviewPath,
-    `# Audit Review
+    `# 审计评审
 
-## Review Scope
-- Inspect workflow execution, state integrity, write boundaries, and approval flow independent of production departments.
+## 评审范围
+- 独立检查工作流执行、状态完整性、写入边界和审批流，不受生产部门影响。
 
-## Findings
-- ${findings.length === 0 ? 'No active findings.' : `${findings.length} finding(s) detected.`}
+## 发现
+- ${findings.length === 0 ? '当前没有活跃发现。' : `共检测到 ${findings.length} 条发现。`}
 
-## Decision
-- ${decision}
+## 结论
+- ${formatDecision(decision)}
 
-## Follow-ups
+## 后续动作
 ${followUpText}
 
-## Escalation
+## 升级处理
 ${escalationText}
 `,
     'utf8'
@@ -170,39 +176,39 @@ ${escalationText}
 
   await writeFile(
     findingsPath,
-    `# Audit Findings
+    `# 审计发现
 
-## Findings List
+## 发现列表
 ${renderFindings(findings)}
 
-## Notifications
-- ${findings.length === 0 ? 'No notifications sent.' : `Notify ${escalationTarget} and the current task owner about the rollback recommendation.`}
+## 通知
+- ${findings.length === 0 ? '当前未发送通知。' : `通知 ${escalationTarget} 和当前任务负责人，说明建议回退动作。`}
 `,
     'utf8'
   );
 
   await writeFile(
     riskPath,
-    `# Risk Register
+    `# 风险登记
 
-## Active Risks
+## 活跃风险
 ${renderRisks(findings)}
 
-## Rollback Recommendation
-- ${findings.length === 0 ? 'None.' : recommendedRollbackState}
+## 回退建议
+- ${findings.length === 0 ? '无。' : recommendedRollbackState}
 `,
     'utf8'
   );
 
   await writeFile(
     compliancePath,
-    `# Compliance Check
+    `# 合规检查
 
-## Compliance Status
-- ${findings.length === 0 ? 'Compliant.' : 'Non-compliant.'}
+## 合规状态
+- ${findings.length === 0 ? '合规。' : '不合规。'}
 
-## Recommended Action
-- ${findings.length === 0 ? 'Continue with the current planned workflow.' : `Escalate to ${escalationTarget} and return to ${recommendedRollbackState}.`}
+## 建议动作
+- ${findings.length === 0 ? '继续按当前规划工作流推进。' : `升级到 ${escalationTarget}，并回退到 ${recommendedRollbackState}。`}
 `,
     'utf8'
   );

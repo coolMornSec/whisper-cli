@@ -1,7 +1,7 @@
-# Dependency Policy
+# 依赖策略
 
-## Allowed Dependencies
-- Use only Node.js built-in modules in this phase.
+## 允许依赖
+- 当前阶段只允许使用 Node.js 内置模块。
 
-## Prohibited Changes
-- Do not add third-party runtime dependencies for the workflow controller.
+## 禁止变更
+- 不要为工作流控制器新增第三方运行时依赖。

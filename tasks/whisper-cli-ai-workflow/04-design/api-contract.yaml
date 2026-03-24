@@ -1,11 +1,11 @@
 openapi: 3.1.0
 info:
-  title: MAS Task Workspace Contract
+  title: MAS 任务工作区契约
   version: 1.0.0
 paths:
   /tasks/{taskId}/state:
     get:
-      summary: Read task runtime state
+      summary: 读取任务运行时状态
   /tasks/{taskId}/manifest:
     get:
-      summary: Read task static manifest
+      summary: 读取任务静态清单

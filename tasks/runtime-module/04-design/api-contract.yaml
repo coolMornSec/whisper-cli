@@ -1,0 +1,8 @@
+openapi: 3.1.0
+info:
+  title: External Driver Contract
+  version: 1.0.0
+paths:
+  /tasks/{taskId}/board:
+    get:
+      summary: 获取任务看板

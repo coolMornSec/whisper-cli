@@ -1,13 +1,13 @@
-# Requirement Review
+# 需求评审
 
-## Review Scope
-- Check requirement clarity, scope boundaries, and acceptance criteria.
+## 评审范围
+- 检查需求清晰度、范围边界和验收标准。
 
-## Findings
-- Record whether the specification is fit to enter planning.
+## 发现
+- 记录当前规格是否足以进入规划阶段。
 
-## Decision
-- pending
+## 结论
+- 待定
 
-## Follow-ups
-- If rejected, return to SPEC_DRAFT with explicit gaps to address.
+## 后续动作
+- 若驳回，返回 SPEC_DRAFT，并明确说明待补齐缺口。

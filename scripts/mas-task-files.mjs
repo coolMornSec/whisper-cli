@@ -43,20 +43,20 @@ function md(title, sections) {
 }
 
 function checklist(items) {
-  return `## Completion Checklist\n${items.map(item => `- [ ] ${item}`).join('\n')}`;
+  return `## 完成检查清单\n${items.map(item => `- [ ] ${item}`).join('\n')}`;
 }
 
 function reviewDoc(title, scope, findings, followUps) {
   return md(title, [
-    `## Review Scope\n- ${scope}`,
-    `## Findings\n- ${findings}`,
-    '## Decision\n- pending',
-    `## Follow-ups\n- ${followUps}`
+    `## 评审范围\n- ${scope}`,
+    `## 发现\n- ${findings}`,
+    '## 结论\n- 待定',
+    `## 后续动作\n- ${followUps}`
   ]);
 }
 
 function verifyDoc(title, summary) {
-  return md(title, [`## Verification Summary\n- ${summary}`]);
+  return md(title, [`## 验证摘要\n- ${summary}`]);
 }
 
 export function renderTaskFiles(taskId, title, goal) {
@@ -64,146 +64,146 @@ export function renderTaskFiles(taskId, title, goal) {
   const state = defaultState(taskId, manifest.departments);
 
   return {
-    'AGENT.md': md('Agent Execution Contract', [
-      `## Mission
-- Deliver the case goal for \`${taskId}\` without breaking the fixed MAS workflow contract.
-- Current case goal: ${goal}`,
-      '## Authority Order\n- user request\n- approved specification\n- passed review decisions\n- manifest.json\n- state.json\n- AGENT.md\n- local execution notes',
-      '## Department Role Map\n- `zhongshu`: clarify intent, scope, acceptance criteria, and non-goals.\n- `menxia`: review only and issue pass or reject decisions.\n- `shangshu`: coordinate state progression, rollback, and contract stewardship.\n- `libu_task_breakdown`: define workstreams, dependencies, and ownership.\n- `libu_prototype`: define prototype structure and interaction states.\n- `gongbu`: produce API, data, and build outputs.\n- `xingbu`: produce rules, tests, and verification evidence.\n- `yushitai`: audit independently and notify shangshu when the workflow drifts.',
-      '## Read Inputs\n- Read `manifest.json`, `state.json`, `AGENT.md`, and the approved upstream deliverables before writing.',
-      '## Allowed Outputs\n- Write only inside `state.json.allowed_write_paths`.\n- Do not change another department\'s deliverables without a routed re-entry.',
-      '## Stage Execution Rules\n- Do not cross a gate while the upstream review decision is pending.\n- Treat `approved_artifacts` as derived truth, not a field to force manually.\n- Keep evidence in the expected deliverables and `agent-log.md`.',
-      '## Escalation Rules\n- Escalate to shangshu when instructions conflict, ownership is unclear, or the required write path is missing.\n- Stop instead of guessing when a required review or audit is unresolved.',
-      '## Audit Hooks\n- Leave clear, reviewable evidence for `yushitai` in the expected deliverables.\n- Never edit `09-audit/` unless the active state explicitly grants it.',
-      '## Case Overrides\n- No case overrides.',
-      '## Completion Protocol\n- Before handoff, record inputs used, outputs changed, unresolved risks, and the next gate recommendation.'
+    'AGENT.md': md('Agent 执行约定', [
+      `## 任务使命
+- 在不破坏固定 MAS 工作流约定的前提下，完成 \`${taskId}\` 的任务目标。
+- 当前任务目标：${goal}`,
+      '## 权限优先级\n- 用户请求\n- 已批准的任务规格\n- 已通过的评审结论\n- manifest.json\n- state.json\n- AGENT.md\n- 本地执行记录',
+      '## 部门角色映射\n- `zhongshu`：澄清意图、范围、验收标准和非目标。\n- `menxia`：只负责评审并给出通过或驳回结论。\n- `shangshu`：协调状态推进、回退和约定维护。\n- `libu_task_breakdown`：定义工作流拆分、依赖关系和责任归属。\n- `libu_prototype`：定义原型结构和交互状态。\n- `gongbu`：产出 API、数据和构建结果。\n- `xingbu`：产出规则、测试和验证证据。\n- `yushitai`：独立审计，并在工作流偏移时通知 shangshu。',
+      '## 读取输入\n- 写入前先读取 `manifest.json`、`state.json`、`AGENT.md` 和已批准的上游交付物。',
+      '## 允许输出\n- 只允许在 `state.json.allowed_write_paths` 内写入。\n- 未经路由回流，不要修改其他部门的交付物。',
+      '## 阶段执行规则\n- 上游评审结论仍为待定时，不要跨越当前门禁。\n- 将 `approved_artifacts` 视为推导结果，而不是手工强改字段。\n- 在预期交付物和 `agent-log.md` 中保留证据。',
+      '## 升级规则\n- 当指令冲突、责任不清或缺少所需写入路径时，升级给 shangshu。\n- 当必需评审或审计未决时，停止而不是猜测推进。',
+      '## 审计钩子\n- 在预期交付物中为 `yushitai` 留下清晰、可核查的证据。\n- 除非当前状态明确授权，否则不要编辑 `09-audit/`。',
+      '## 任务覆盖项\n- 无任务覆盖项。',
+      '## 完成交接协议\n- 交接前记录使用过的输入、变更过的输出、未解决风险，以及对下一道门禁的建议。'
     ]),
-    '00-intake/request.md': md('User Request', [
+    '00-intake/request.md': md('用户请求', [
       `- Task ID: \`${taskId}\``,
-      `- Title: ${title}`,
-      `- Goal: ${goal}`
+      `- 标题: ${title}`,
+      `- 目标: ${goal}`
     ]),
-    '00-intake/context.md': md('Business Context', [
-      '- This task bootstraps a reusable MAS V1 workspace with enforceable workflow rules.',
-      '- The workspace is intended to become a stable mechanism for future project delivery.'
+    '00-intake/context.md': md('业务背景', [
+      '- 本任务用于搭建一个可复用的 MAS V1 工作区，并为其配上可执行的工作流规则。',
+      '- 该工作区旨在成为后续项目交付的稳定机制。'
     ]),
-    '00-intake/constraints.md': md('Constraints', [
-      '- Prototype must be approved before API design is finalized.',
-      '- API review must pass before rules are frozen and build can proceed.',
-      '- Tests must be designed and reviewed before implementation starts.'
+    '00-intake/constraints.md': md('约束条件', [
+      '- 原型必须先通过评审，API 设计才能最终定稿。',
+      '- API 评审通过后，规则才能冻结，构建才能推进。',
+      '- 实现开始前，测试必须先设计并完成评审。'
     ]),
-    '01-spec/spec.md': md('Specification', [
-      '## Task Goal\n- Build a complete MAS task workspace that can be validated and advanced by policy.',
-      '## Business Context\n- The repository is evolving from architecture notes into an executable delivery mechanism.',
-      '## Scope\n### In Scope\n- Fixed workspace structure\n- State validation\n- Transition control\n### Out Of Scope\n- Deployment automation',
-      '## Inputs And Outputs\n- Inputs: architecture design, workflow policy, task metadata\n- Outputs: scaffolded task workspace, validated state, transition controller',
-      '## Acceptance Criteria\n- Scaffolded workspaces pass validation\n- State transitions enforce entry gates\n- Review decisions control pass and reject routing',
+    '01-spec/spec.md': md('任务规格', [
+      '## 任务目标\n- 构建一个完整的 MAS 任务工作区，使其能够按策略校验并推进状态。',
+      '## 业务背景\n- 这个仓库正在从架构说明演进为可执行的交付机制。',
+      '## 范围\n### In Scope\n- 固定工作区结构\n- 状态校验\n- 状态流转控制\n### Out Of Scope\n- 部署自动化',
+      '## 输入输出\n- 输入：架构设计、工作流策略、任务元数据\n- 输出：脚手架化任务工作区、已校验状态、状态流转控制器',
+      '## 验收标准\n- 脚手架生成的工作区能够通过校验\n- 状态流转会执行入口门禁\n- 评审结论能够控制通过与驳回路由',
       checklist([
-        'Goal, scope, and acceptance criteria are explicit.',
-        'Business context and non-goals are captured.',
-        'The next department can consume the spec without asking for missing definitions.'
+        '目标、范围和验收标准已明确。',
+        '业务背景和非目标已记录。',
+        '下一个部门无需补问缺失定义即可消费该规格。'
       ])
     ]),
-    '01-spec/acceptance.md': md('Acceptance Criteria', [
-      '## Acceptance Checklist\n- Every required workspace file exists.\n- manifest.json and state.json remain consistent with workflow policy.\n- Workflow validation and tests pass.'
+    '01-spec/acceptance.md': md('验收标准', [
+      '## 验收检查清单\n- 所有必需的工作区文件都已存在。\n- manifest.json 与 state.json 与工作流策略保持一致。\n- 工作流校验和测试全部通过。'
     ]),
-    '01-spec/non-goals.md': md('Non-Goals', [
-      '## Deferred Items\n- Do not implement a runtime agent scheduler in this phase.\n- Do not cover deployment or external integrations in this phase.'
+    '01-spec/non-goals.md': md('非目标', [
+      '## 暂缓项\n- 本阶段不实现运行时 Agent 调度器。\n- 本阶段不覆盖部署或外部集成。'
     ]),
     '02-review/requirement-review.md': reviewDoc(
-      'Requirement Review',
-      'Check requirement clarity, scope boundaries, and acceptance criteria.',
-      'Record whether the specification is fit to enter planning.',
-      'If rejected, return to SPEC_DRAFT with explicit gaps to address.'
+      '需求评审',
+      '检查需求清晰度、范围边界和验收标准。',
+      '记录当前规格是否足以进入规划阶段。',
+      '若驳回，返回 SPEC_DRAFT，并明确说明待补齐缺口。'
     ),
     '02-review/ui-review.md': reviewDoc(
-      'UI Review',
-      'Check prototype structure, information architecture, and interaction coverage.',
-      'Record whether the prototype is clear enough to support API design.',
-      'If rejected, return to PROTOTYPE_DRAFT with missing interaction states.'
+      'UI 评审',
+      '检查原型结构、信息架构和交互覆盖情况。',
+      '记录原型是否足够清晰，可以支撑 API 设计。',
+      '若驳回，返回 PROTOTYPE_DRAFT，并补齐缺失交互状态。'
     ),
     '02-review/api-review.md': reviewDoc(
-      'API Review',
-      'Check contract structure, data ownership, and migration impact.',
-      'Record whether the API contract is stable enough to freeze.',
-      'If rejected, return to API_DESIGNED with the conflicting contract details.'
+      'API 评审',
+      '检查契约结构、数据归属和迁移影响。',
+      '记录 API 契约是否已稳定到可以冻结。',
+      '若驳回，返回 API_DESIGNED，并指出冲突契约细节。'
     ),
     '02-review/test-review.md': reviewDoc(
-      'Test Review',
-      'Check rule coverage, test case completeness, and verification scope.',
-      'Record whether the test package is sufficient to unlock build execution.',
-      'If rejected, return to TESTS_DRAFTED with missing cases and quality gates.'
+      '测试评审',
+      '检查规则覆盖、测试用例完整性和验证范围。',
+      '记录测试包是否足以解锁构建执行。',
+      '若驳回，返回 TESTS_DRAFTED，并补齐缺失用例和质量门禁。'
     ),
-    '03-plan/task-breakdown.md': md('Task Breakdown', [
-      '## Workstreams\n- Scaffold workflow workspace\n- Define manifest and state policy\n- Enforce transitions and entry gates\n- Validate sample task end to end',
-      '## Deliverable Mapping\n- zhongshu -> intake and specification\n- menxia -> review records\n- gongbu -> design contract and build summary\n- xingbu -> rules, tests, verification\n- yushitai -> audit evidence',
+    '03-plan/task-breakdown.md': md('任务拆分', [
+      '## 工作流拆分\n- 搭建工作流工作区脚手架\n- 定义 manifest 与 state 策略\n- 执行状态流转与入口门禁\n- 端到端校验示例任务',
+      '## 交付物映射\n- zhongshu -> intake 与任务规格\n- menxia -> 评审记录\n- gongbu -> 设计契约与构建总结\n- xingbu -> 规则、测试、验证\n- yushitai -> 审计证据',
       checklist([
-        'Each workstream has a concrete owner.',
-        'Each workstream maps to a fixed deliverable.',
-        'No build work starts before the upstream gates are identified.'
+        '每个工作流都有明确负责人。',
+        '每个工作流都映射到固定交付物。',
+        '在明确上游门禁前，不会启动构建工作。'
       ])
     ]),
-    '03-plan/dependency-map.md': md('Dependency Map', [
-      '## Critical Path\n- Requirement review -> planning -> prototype -> API review -> rules and tests -> build -> verify -> audit',
-      '## Parallelization Notes\n- Build and verification can parallelize only after TEST_REVIEW passes and allowed paths are updated.'
+    '03-plan/dependency-map.md': md('依赖关系图', [
+      '## 关键路径\n- 需求评审 -> 规划 -> 原型 -> API 评审 -> 规则与测试 -> 构建 -> 验证 -> 审计',
+      '## 并行说明\n- 只有在 TEST_REVIEW 通过且允许路径更新后，构建与验证才能并行推进。'
     ]),
-    '03-plan/ownership.md': md('Ownership', [
-      '## Department Ownership\n- zhongshu: intake and specification\n- menxia: review decisions\n- shangshu: state control and freeze management\n- gongbu: contract and implementation artifacts\n- xingbu: rules, tests, and verification\n- yushitai: audit and escalation',
-      '## Handover Rules\n- The receiving department must confirm upstream completion before changing the task state.\n- Rework must return to the owning production department, not be corrected inside review or audit.'
+    '03-plan/ownership.md': md('责任归属', [
+      '## 部门归属\n- zhongshu: intake 与任务规格\n- menxia: 评审结论\n- shangshu: 状态控制与冻结管理\n- gongbu: 契约与实现产物\n- xingbu: 规则、测试与验证\n- yushitai: 审计与升级',
+      '## 交接规则\n- 接收部门在变更任务状态前，必须确认上游已完成。\n- 返工必须退回到对应的生产部门，不能在评审或审计环节直接改正。'
     ]),
-    '04-design/prototype.md': md('Prototype Design', [
-      '## Page Map\n- Organize the workspace around fixed 00-09 phase directories and control documents.',
-      '## Interaction Rules\n- Clarify first, review second, freeze third, then build and audit.',
+    '04-design/prototype.md': md('原型设计', [
+      '## 页面结构\n- 以固定的 00-09 阶段目录和控制文档组织整个工作区。',
+      '## 交互规则\n- 先澄清、再评审、后冻结，最后构建和审计。',
       checklist([
-        'Primary workflow surfaces are identified.',
-        'Required interaction states are listed.',
-        'The prototype is stable enough to drive API design.'
+        '核心工作流界面已识别。',
+        '必需交互状态已列出。',
+        '原型已稳定到可以驱动 API 设计。'
       ])
     ]),
     '04-design/api-contract.yaml': `openapi: 3.1.0
 info:
-  title: MAS Task Workspace Contract
+  title: MAS 任务工作区契约
   version: 1.0.0
 paths:
   /tasks/{taskId}/state:
     get:
-      summary: Read task runtime state
+      summary: 读取任务运行时状态
   /tasks/{taskId}/manifest:
     get:
-      summary: Read task static manifest
+      summary: 读取任务静态清单
 `,
-    '04-design/data-model.md': md('Data Model', [
-      '## Entities\n- manifest.json stores task policy, routing, and artifact ownership.\n- state.json stores the active workflow state, agents, and approved artifacts.',
-      '## State Records\n- agent-log.md stores stage-level execution evidence and handoff context.'
+    '04-design/data-model.md': md('数据模型', [
+      '## 实体\n- manifest.json 存储任务策略、路由和交付物归属。\n- state.json 存储当前工作流状态、活跃 Agent 和已批准产物。',
+      '## 状态记录\n- agent-log.md 存储阶段级执行证据和交接上下文。'
     ]),
-    '04-design/migration-plan.md': md('Migration Plan', [
-      '## Migration Steps\n- Replace the old document-only scaffold with a complete tasks/<task-id>/ workspace.\n- Validate the repository against a default sample task.\n- Add a transition controller so state cannot be advanced by ad hoc edits.',
-      '## Rollback Notes\n- If a migration breaks policy validation, revert the workspace to the last validated task state before continuing.'
+    '04-design/migration-plan.md': md('迁移计划', [
+      '## 迁移步骤\n- 用完整的 tasks/<task-id>/ 工作区替换旧的纯文档脚手架。\n- 使用默认示例任务对仓库执行校验。\n- 增加状态流转控制器，避免通过临时编辑推进状态。',
+      '## 回滚说明\n- 如果迁移破坏策略校验，应先将工作区回退到上一个已验证状态，再继续推进。'
     ]),
-    '05-rules/rules.md': md('Rules Catalog', [
-      '## Enforced Rules\n\n### RULE-001\n- Source: architecture design\n- Trigger: scaffold workspace\n- Constraint: generate the complete MAS task structure\n- Severity: high\n- Check: workflow validation',
-      '### RULE-002\n- Source: workflow policy\n- Trigger: transition state\n- Constraint: the target state must pass its entry gate before activation\n- Severity: high\n- Check: transition controller',
+    '05-rules/rules.md': md('规则清单', [
+      '## 生效规则\n\n### RULE-001\n- 来源: 架构设计\n- 触发条件: 生成工作区脚手架\n- 约束内容: 必须生成完整的 MAS 任务结构\n- 严重级别: high\n- 检查方式: 工作流校验',
+      '### RULE-002\n- 来源: 工作流策略\n- 触发条件: 进行状态流转\n- 约束内容: 目标状态在激活前必须通过入口门禁\n- 严重级别: high\n- 检查方式: 状态流转控制器',
       checklist([
-        'Each rule names its source, trigger, and check.',
-        'Rules cover both happy path and rollback path constraints.',
-        'The next review stage can trace every gate to a rule.'
+        '每条规则都写明来源、触发条件和检查方式。',
+        '规则同时覆盖正常路径和回退路径约束。',
+        '下一次评审可以把每道门禁追溯到具体规则。'
       ])
     ]),
-    '05-rules/allowed-files.md': md('Allowed Files', [
-      '## Department Paths\n- zhongshu -> 00-intake/, 01-spec/\n- menxia -> 02-review/\n- shangshu -> 03-plan/\n- yushitai -> 09-audit/'
+    '05-rules/allowed-files.md': md('允许文件', [
+      '## 部门路径\n- zhongshu -> 00-intake/, 01-spec/\n- menxia -> 02-review/\n- shangshu -> 03-plan/\n- yushitai -> 09-audit/'
     ]),
-    '05-rules/dependency-policy.md': md('Dependency Policy', [
-      '## Allowed Dependencies\n- Use only Node.js built-in modules in this phase.',
-      '## Prohibited Changes\n- Do not add third-party runtime dependencies for the workflow controller.'
+    '05-rules/dependency-policy.md': md('依赖策略', [
+      '## 允许依赖\n- 当前阶段只允许使用 Node.js 内置模块。',
+      '## 禁止变更\n- 不要为工作流控制器新增第三方运行时依赖。'
     ]),
-    '05-rules/quality-gates.md': md('Quality Gates', [
-      '## Gate Matrix\n- REQUIREMENT_REVIEW -> TASK_PLANNED\n- UI_REVIEW -> API_DESIGNED\n- API_REVIEW -> RULES_FROZEN\n- TEST_REVIEW -> BUILD_IN_PROGRESS\n- AUDIT_REVIEW -> DONE'
+    '05-rules/quality-gates.md': md('质量门禁', [
+      '## 门禁矩阵\n- REQUIREMENT_REVIEW -> TASK_PLANNED\n- UI_REVIEW -> API_DESIGNED\n- API_REVIEW -> RULES_FROZEN\n- TEST_REVIEW -> BUILD_IN_PROGRESS\n- AUDIT_REVIEW -> DONE'
     ]),
-    '06-tests/test-cases.md': md('Test Cases', [
-      '## Case List\n\n### CASE-001\n- Input: scaffold workspace\n- Expected Output: every required task artifact exists',
-      '### CASE-002\n- Input: transition to a review state with incomplete inputs\n- Expected Output: the controller blocks the transition',
-      '### CASE-003\n- Input: rejected review decision\n- Expected Output: the controller routes to the matching rejected state',
-      '## Coverage Map\n- Covers scaffold, validation, transition gating, approval synchronization, and review-driven rollback.'
+    '06-tests/test-cases.md': md('测试用例', [
+      '## 用例列表\n\n### CASE-001\n- 输入: 生成工作区脚手架\n- 预期输出: 所有必需任务产物都存在',
+      '### CASE-002\n- 输入: 在输入不完整时流转到评审状态\n- 预期输出: 控制器阻止这次流转',
+      '### CASE-003\n- 输入: 评审结论为驳回\n- 预期输出: 控制器会路由到对应的驳回状态',
+      '## 覆盖范围\n- 覆盖脚手架、校验、状态流转门禁、审批同步和评审驱动回退。'
     ]),
     '06-tests/contract/.gitkeep': '',
     '06-tests/frontend/.gitkeep': '',
@@ -212,47 +212,47 @@ paths:
     '07-build/frontend/.gitkeep': '',
     '07-build/backend/.gitkeep': '',
     '07-build/database/.gitkeep': '',
-    '07-build/generated-summary.md': md('Build Summary', [
-      '## Generated Outputs\n- The sample task validates workflow mechanics only and does not ship product code.',
+    '07-build/generated-summary.md': md('构建总结', [
+      '## 生成产物\n- 该示例任务只验证工作流机制，不交付业务代码。',
       checklist([
-        'Generated outputs are listed.',
-        'Build scope stays inside the allowed write paths.',
-        'The next verification stage can audit what was produced.'
+        '已列出所有生成产物。',
+        '构建范围保持在允许写入路径内。',
+        '下一阶段验证可以审计本阶段产物。'
       ])
     ]),
-    '08-verify/test-results.md': verifyDoc('Test Results', 'Expected to be filled by automated validation in future iterations.'),
+    '08-verify/test-results.md': verifyDoc('测试结果', '预留给未来自动化校验填充。'),
     '08-verify/contract-results.md': verifyDoc(
-      'Contract Results',
-      'Confirm manifest and state remain aligned with artifact paths and workflow policy.'
+      '契约结果',
+      '确认 manifest 与 state 仍与产物路径和工作流策略保持一致。'
     ),
     '08-verify/build-results.md': verifyDoc(
-      'Build Results',
-      'Confirm the task can progress from BUILD_IN_PROGRESS to INTEGRATION_VERIFY with required artifacts.'
+      '构建结果',
+      '确认任务在具备必需产物后，可以从 BUILD_IN_PROGRESS 推进到 INTEGRATION_VERIFY。'
     ),
     '08-verify/integration-results.md': verifyDoc(
-      'Integration Results',
-      'Confirm the workspace, state machine, and permission rules validate as one system.'
+      '集成结果',
+      '确认工作区、状态机和权限规则可以作为一个整体通过校验。'
     ),
     '09-audit/review.md': reviewDoc(
-      'Audit Review',
-      'Check workflow structure, state control, write boundaries, and policy conformance.',
-      'Record whether the task stayed aligned with the approved process.',
-      'If rejected, notify shangshu and route back to the owning recovery state.'
-    ) + '\n## Escalation\n- Notify shangshu when findings require rollback or re-planning.\n',
-    '09-audit/findings.md': md('Audit Findings', [
-      '## Findings List\n- No critical findings in the baseline sample task.',
-      '## Notifications\n- No active escalations.'
+      '审计评审',
+      '检查工作流结构、状态控制、写入边界和策略符合性。',
+      '记录任务是否始终与已批准流程保持一致。',
+      '若驳回，通知 shangshu，并路由回对应恢复状态。'
+    ) + '\n## 升级处理\n- 当发现需要回退或重新规划时，通知 shangshu。\n',
+    '09-audit/findings.md': md('审计发现', [
+      '## 发现列表\n- 基线示例任务当前没有关键发现。',
+      '## 通知\n- 当前没有活跃升级。'
     ]),
-    '09-audit/risk-register.md': md('Risk Register', [
-      '## Active Risks\n- R-001: future runtime orchestration will need stronger event logging and execution locking.',
-      '## Rollback Recommendation\n- None.'
+    '09-audit/risk-register.md': md('风险登记', [
+      '## 活跃风险\n- R-001: 未来的运行时编排需要更强的事件日志和执行锁定能力。',
+      '## 回退建议\n- 无。'
     ]),
-    '09-audit/compliance.md': md('Compliance Check', [
-      '## Compliance Status\n- Write boundaries reviewed.\n- State progression reviewed.\n- Entry gate policy reviewed.',
-      '## Recommended Action\n- Continue with the current planned workflow until audit findings appear.'
+    '09-audit/compliance.md': md('合规检查', [
+      '## 合规状态\n- 写入边界已复核。\n- 状态推进已复核。\n- 入口门禁策略已复核。',
+      '## 建议动作\n- 在出现审计发现前，继续按当前规划工作流推进。'
     ]),
-    'agent-log.md': md('Agent Execution Log', [
-      '## Stage Records\n\n### Stage 1 - Specification Prepared\n- Input Document: 00-intake/request.md\n- Output Document: 01-spec/spec.md\n- Followed Scope: yes\n- Modified Unrelated Files: no\n- Added New Dependencies: no\n- Review Decision: pending\n- Remaining Risk: low'
+    'agent-log.md': md('Agent 执行日志', [
+      '## 阶段记录\n\n### 阶段 1 - 已完成任务规格\n- 输入文档: 00-intake/request.md\n- 输出文档: 01-spec/spec.md\n- 是否遵守范围: 是\n- 是否修改无关文件: 否\n- 是否新增依赖: 否\n- 评审结论: 待定\n- 剩余风险: low'
     ]),
     'state.json': `${JSON.stringify(state, null, 2)}\n`,
     'manifest.json': `${JSON.stringify(manifest, null, 2)}\n`

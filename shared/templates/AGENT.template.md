@@ -1,43 +1,43 @@
-# Agent Execution Contract
+# Agent 执行约定
 
-## Mission
-- Describe the business objective of this task in one concise paragraph.
+## 任务使命
+- 用一段简洁的话描述本任务的业务目标。
 
-## Authority Order
-- Follow this precedence strictly: user request -> approved spec -> passed review -> manifest.json -> state.json -> AGENT.md -> local execution notes.
+## 权限优先级
+- 严格遵循以下优先级：用户请求 -> 已批准 spec -> 已通过评审 -> manifest.json -> state.json -> AGENT.md -> 本地执行记录。
 
-## Department Role Map
-- `zhongshu`: clarify intent, scope, non-goals, and acceptance criteria.
-- `menxia`: review only, decide pass or reject, never silently rewrite deliverables.
-- `shangshu`: coordinate progression, freeze outputs, and own rollback orchestration.
-- `libu_task_breakdown`: define workstreams, dependencies, and ownership.
-- `libu_prototype`: define prototype structure and interaction states.
-- `gongbu`: produce API, data, and build outputs.
-- `xingbu`: define rules, tests, and verification evidence.
-- `yushitai`: audit independently, notify shangshu, and recommend rollback when needed.
+## 部门角色映射
+- `zhongshu`：澄清意图、范围、非目标和验收标准。
+- `menxia`：只负责评审，给出通过或驳回结论，不能静默重写交付物。
+- `shangshu`：协调推进、冻结产物，并负责回退编排。
+- `libu_task_breakdown`：定义工作流拆分、依赖关系和责任归属。
+- `libu_prototype`：定义原型结构和交互状态。
+- `gongbu`：产出 API、数据和构建产物。
+- `xingbu`：定义规则、测试和验证证据。
+- `yushitai`：独立审计、通知 shangshu，并在需要时建议回退。
 
-## Read Inputs
-- Always read `manifest.json`, `state.json`, `AGENT.md`, and the upstream approved deliverables for the current state before writing.
+## 读取输入
+- 开始写入前，始终先读取 `manifest.json`、`state.json`、`AGENT.md` 以及当前状态已批准的上游交付物。
 
-## Allowed Outputs
-- Write only inside the paths granted by `state.json.allowed_write_paths`.
-- Do not modify deliverables owned by another department unless the workflow has routed the task back to that department.
+## 允许输出
+- 只允许在 `state.json.allowed_write_paths` 授权的路径内写入。
+- 除非工作流已将任务路由回对应部门，否则不要修改其他部门拥有的交付物。
 
-## Stage Execution Rules
-- Do not start work for the next stage until the current entry gate has passed.
-- Treat review documents with `Decision: pending` as blocked, not approved.
-- Treat `approved_artifacts` as derived truth, never as a field to force manually.
+## 阶段执行规则
+- 当前入口门禁未通过前，不要启动下一阶段工作。
+- 将 `结论: 待定` 的评审文档视为阻塞，而不是已批准。
+- 将 `approved_artifacts` 视为推导结果，绝不能手工强行改值。
 
-## Escalation Rules
-- Escalate to shangshu when inputs conflict, a gate fails, required ownership is unclear, or execution would exceed the allowed write paths.
-- Stop and wait when a required review or audit decision is still pending.
+## 升级规则
+- 当输入冲突、门禁失败、责任归属不清或执行将超出授权写入范围时，升级给 shangshu。
+- 当必需的评审或审计结论仍为待定时，停止并等待。
 
-## Audit Hooks
-- Leave clear evidence for yushitai in the expected deliverables and `agent-log.md`.
-- Never edit `09-audit/` unless the active state explicitly grants that scope.
+## 审计钩子
+- 在预期交付物和 `agent-log.md` 中为 yushitai 留下清晰证据。
+- 除非当前激活状态明确授权，否则不要编辑 `09-audit/`。
 
-## Case Overrides
-- List only case-specific constraints here. If none exist, state "No case overrides."
+## 任务覆盖项
+- 这里只列任务特定约束。如果没有，写“无任务覆盖项”。
 
-## Completion Protocol
-- Before handoff, confirm inputs used, outputs changed, unresolved risks, and whether the next gate should pass or remain blocked.
+## 完成交接协议
+- 交接前，确认使用过的输入、变更过的输出、未解决风险，以及下一道门禁应通过还是继续阻塞。

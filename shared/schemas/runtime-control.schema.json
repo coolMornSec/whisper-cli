@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whisper-cli.local/schemas/runtime-control.schema.json",
+  "title": "MAS Runtime Control",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "status",
+    "paused",
+    "pause_reason",
+    "current_blocker",
+    "lease",
+    "retry_policy",
+    "pending_human_actions",
+    "last_event_id",
+    "last_event_at",
+    "updated_at"
+  ],
+  "properties": {
+    "task_id": { "type": "string", "minLength": 1 },
+    "status": {
+      "type": "string",
+      "enum": ["queued", "running", "paused", "blocked", "completed", "failed"]
+    },
+    "paused": { "type": "boolean" },
+    "pause_reason": {
+      "type": ["string", "null"]
+    },
+    "current_blocker": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["kind", "code", "message", "at"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "lease": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["owner", "token", "acquired_at", "heartbeat_at", "expires_at"],
+      "properties": {
+        "owner": { "type": "string", "minLength": 1 },
+        "token": { "type": "string", "minLength": 1 },
+        "acquired_at": { "type": "string", "format": "date-time" },
+        "heartbeat_at": { "type": "string", "format": "date-time" },
+        "expires_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    "retry_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total_attempts", "consecutive_failures", "last_error", "last_failure_at"],
+      "properties": {
+        "total_attempts": { "type": "integer", "minimum": 0 },
+        "consecutive_failures": { "type": "integer", "minimum": 0 },
+        "last_error": { "type": ["string", "null"] },
+        "last_failure_at": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "pending_human_actions": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "last_event_id": { "type": "integer", "minimum": 0 },
+    "last_event_at": { "type": ["string", "null"], "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" }
+  }
+}

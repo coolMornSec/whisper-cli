@@ -1,12 +1,12 @@
-# Prototype Design
+# 原型设计
 
-## Page Map
-- Organize the workspace around fixed 00-09 phase directories and control documents.
+## 页面结构
+- 以固定的 00-09 阶段目录和控制文档组织整个工作区。
 
-## Interaction Rules
-- Clarify first, review second, freeze third, then build and audit.
+## 交互规则
+- 先澄清、再评审、后冻结，最后构建和审计。
 
-## Completion Checklist
-- [ ] Primary workflow surfaces are identified.
-- [ ] Required interaction states are listed.
-- [ ] The prototype is stable enough to drive API design.
+## 完成检查清单
+- [ ] 核心工作流界面已识别。
+- [ ] 必需交互状态已列出。
+- [ ] 原型已稳定到可以驱动 API 设计。

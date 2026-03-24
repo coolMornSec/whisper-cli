@@ -1,9 +1,9 @@
-# Compliance Check
+# 合规检查
 
-## Compliance Status
-- Write boundaries reviewed.
-- State progression reviewed.
-- Entry gate policy reviewed.
+## 合规状态
+- 写入边界已复核。
+- 状态推进已复核。
+- 入口门禁策略已复核。
 
-## Recommended Action
-- Continue with the current planned workflow until audit findings appear.
+## 建议动作
+- 在出现审计发现前，继续按当前规划工作流推进。

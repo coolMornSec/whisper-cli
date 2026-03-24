@@ -4,10 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/task-docs.test.mjs",
+    "test": "node tests/task-docs.test.mjs && node tests/runtime.test.mjs",
     "workflow:validate": "node scripts/task-docs.mjs validate --task-id whisper-cli-ai-workflow",
     "workflow:scaffold": "node scripts/task-docs.mjs scaffold --task-id example-task --title \"Example Task\" --goal \"Create a new task workspace through the MAS V1 scaffold\"",
     "workflow:transition": "node scripts/task-docs.mjs transition",
-    "workflow:audit": "node scripts/task-docs.mjs audit --task-id whisper-cli-ai-workflow"
+    "workflow:audit": "node scripts/task-docs.mjs audit --task-id whisper-cli-ai-workflow",
+    "runtime:submit": "node scripts/mas-runtime.mjs submit",
+    "runtime:run-once": "node scripts/mas-runtime.mjs run-once",
+    "runtime:run-loop": "node scripts/mas-runtime.mjs run-loop",
+    "runtime:board": "node scripts/mas-runtime.mjs board",
+    "runtime:events": "node scripts/mas-runtime.mjs events",
+    "runtime:intervene": "node scripts/mas-runtime.mjs intervene",
+    "runtime:intent": "node scripts/mas-runtime-intent.mjs"
   }
 }

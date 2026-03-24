@@ -1,18 +1,18 @@
-# Test Cases
+# 测试用例
 
-## Case List
+## 用例列表
 
 ### CASE-001
-- Input: scaffold workspace
-- Expected Output: every required task artifact exists
+- 输入: 生成工作区脚手架
+- 预期输出: 所有必需任务产物都存在
 
 ### CASE-002
-- Input: transition to a review state with incomplete inputs
-- Expected Output: the controller blocks the transition
+- 输入: 在输入不完整时流转到评审状态
+- 预期输出: 控制器阻止这次流转
 
 ### CASE-003
-- Input: rejected review decision
-- Expected Output: the controller routes to the matching rejected state
+- 输入: 评审结论为驳回
+- 预期输出: 控制器会路由到对应的驳回状态
 
-## Coverage Map
-- Covers scaffold, validation, transition gating, approval synchronization, and review-driven rollback.
+## 覆盖范围
+- 覆盖脚手架、校验、状态流转门禁、审批同步和评审驱动回退。

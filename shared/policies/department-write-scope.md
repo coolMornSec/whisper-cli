@@ -1,6 +1,6 @@
-# Department Write Scope
+# 部门写入范围
 
-## Write Boundaries
+## 写入边界
 - zhongshu: `00-intake/`, `01-spec/`
 - menxia: `02-review/`
 - shangshu: `03-plan/`, `AGENT.md`, `agent-log.md`

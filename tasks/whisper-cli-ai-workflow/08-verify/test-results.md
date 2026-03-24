@@ -1,4 +1,4 @@
-# Test Results
+# 测试结果
 
-## Verification Summary
-- Expected to be filled by automated validation in future iterations.
+## 验证摘要
+- 预留给未来自动化校验填充。

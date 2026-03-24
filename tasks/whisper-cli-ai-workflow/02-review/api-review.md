@@ -1,13 +1,13 @@
-# API Review
+# API 评审
 
-## Review Scope
-- Check contract structure, data ownership, and migration impact.
+## 评审范围
+- 检查契约结构、数据归属和迁移影响。
 
-## Findings
-- Record whether the API contract is stable enough to freeze.
+## 发现
+- 记录 API 契约是否已稳定到可以冻结。
 
-## Decision
-- pending
+## 结论
+- 待定
 
-## Follow-ups
-- If rejected, return to API_DESIGNED with the conflicting contract details.
+## 后续动作
+- 若驳回，返回 API_DESIGNED，并指出冲突契约细节。

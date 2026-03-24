@@ -1,0 +1,18 @@
+{
+  "task_id": "personal-website",
+  "status": "queued",
+  "paused": false,
+  "pause_reason": null,
+  "current_blocker": null,
+  "lease": null,
+  "retry_policy": {
+    "total_attempts": 0,
+    "consecutive_failures": 0,
+    "last_error": null,
+    "last_failure_at": null
+  },
+  "pending_human_actions": [],
+  "last_event_id": 1,
+  "last_event_at": "2026-03-24T14:59:05.536Z",
+  "updated_at": "2026-03-24T14:59:05.536Z"
+}

@@ -1,9 +1,9 @@
-# Build Summary
+# 构建总结
 
-## Generated Outputs
-- The sample task validates workflow mechanics only and does not ship product code.
+## 生成产物
+- 该示例任务只验证工作流机制，不交付业务代码。
 
-## Completion Checklist
-- [ ] Generated outputs are listed.
-- [ ] Build scope stays inside the allowed write paths.
-- [ ] The next verification stage can audit what was produced.
+## 完成检查清单
+- [ ] 已列出所有生成产物。
+- [ ] 构建范围保持在允许写入路径内。
+- [ ] 下一阶段验证可以审计本阶段产物。

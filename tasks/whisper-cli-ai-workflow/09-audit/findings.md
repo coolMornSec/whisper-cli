@@ -1,7 +1,7 @@
-# Audit Findings
+# 审计发现
 
-## Findings List
-- No critical findings in the baseline sample task.
+## 发现列表
+- 基线示例任务当前没有关键发现。
 
-## Notifications
-- No active escalations.
+## 通知
+- 当前没有活跃升级。

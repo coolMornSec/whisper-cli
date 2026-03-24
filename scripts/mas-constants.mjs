@@ -77,6 +77,8 @@ export const TASK_FILES = [
   '09-audit/findings.md',
   '09-audit/risk-register.md',
   '09-audit/compliance.md',
+  'runtime/control.json',
+  'runtime/events.jsonl',
   'agent-log.md',
   'state.json',
   'manifest.json'

@@ -9,15 +9,15 @@ export const GATE_RULES = {
   REQUIREMENT_REVIEW: {
     markdownSections: {
       '01-spec/spec.md': [
-        '# Specification',
-        '## Task Goal',
-        '## Business Context',
-        '## Scope',
-        '## Inputs And Outputs',
-        '## Acceptance Criteria'
+        '# 任务规格',
+        '## 任务目标',
+        '## 业务背景',
+        '## 范围',
+        '## 输入输出',
+        '## 验收标准'
       ],
-      '01-spec/acceptance.md': ['# Acceptance Criteria'],
-      '01-spec/non-goals.md': ['# Non-Goals']
+      '01-spec/acceptance.md': ['# 验收标准'],
+      '01-spec/non-goals.md': ['# 非目标']
     }
   },
   TASK_PLANNED: {
@@ -31,7 +31,7 @@ export const GATE_RULES = {
   },
   UI_REVIEW: {
     markdownSections: {
-      '04-design/prototype.md': ['# Prototype Design', '## Page Map', '## Interaction Rules']
+      '04-design/prototype.md': ['# 原型设计', '## 页面结构', '## 交互规则']
     }
   },
   API_DESIGNED: {
@@ -60,7 +60,7 @@ export const GATE_RULES = {
   },
   TEST_REVIEW: {
     markdownSections: {
-      '06-tests/test-cases.md': ['# Test Cases', '## Case List']
+      '06-tests/test-cases.md': ['# 测试用例', '## 用例列表']
     }
   },
   BUILD_IN_PROGRESS: {
@@ -96,8 +96,22 @@ async function readMarkdown(rootDir, taskId, relativePath) {
 }
 
 export function parseDecision(markdown) {
-  const match = markdown.match(/## Decision\s*\r?\n-\s*([a-zA-Z]+)/);
-  return match ? match[1].toLowerCase() : null;
+  const match = markdown.match(/## (?:Decision|结论)\s*\r?\n-\s*([^\r\n]+)/u);
+  if (!match) {
+    return null;
+  }
+
+  const raw = match[1].trim().toLowerCase();
+  const decisionMap = {
+    pending: 'pending',
+    '待定': 'pending',
+    pass: 'pass',
+    '通过': 'pass',
+    reject: 'reject',
+    '驳回': 'reject'
+  };
+
+  return decisionMap[raw] ?? null;
 }
 
 export async function validateStateEntryGate({ rootDir, taskId, targetState }) {

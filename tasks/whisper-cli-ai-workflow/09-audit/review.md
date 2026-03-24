@@ -1,16 +1,16 @@
-# Audit Review
+# 审计评审
 
-## Review Scope
-- Check workflow structure, state control, write boundaries, and policy conformance.
+## 评审范围
+- 检查工作流结构、状态控制、写入边界和策略符合性。
 
-## Findings
-- Record whether the task stayed aligned with the approved process.
+## 发现
+- 记录任务是否始终与已批准流程保持一致。
 
-## Decision
-- pending
+## 结论
+- 待定
 
-## Follow-ups
-- If rejected, notify shangshu and route back to the owning recovery state.
+## 后续动作
+- 若驳回，通知 shangshu，并路由回对应恢复状态。
 
-## Escalation
-- Notify shangshu when findings require rollback or re-planning.
+## 升级处理
+- 当发现需要回退或重新规划时，通知 shangshu。

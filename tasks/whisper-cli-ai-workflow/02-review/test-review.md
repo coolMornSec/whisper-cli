@@ -1,13 +1,13 @@
-# Test Review
+# 测试评审
 
-## Review Scope
-- Check rule coverage, test case completeness, and verification scope.
+## 评审范围
+- 检查规则覆盖、测试用例完整性和验证范围。
 
-## Findings
-- Record whether the test package is sufficient to unlock build execution.
+## 发现
+- 记录测试包是否足以解锁构建执行。
 
-## Decision
-- pending
+## 结论
+- 待定
 
-## Follow-ups
-- If rejected, return to TESTS_DRAFTED with missing cases and quality gates.
+## 后续动作
+- 若驳回，返回 TESTS_DRAFTED，并补齐缺失用例和质量门禁。

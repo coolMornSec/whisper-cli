@@ -1,29 +1,29 @@
-# Specification
+# 任务规格
 
-## Task Goal
-- Build a complete MAS task workspace that can be validated and advanced by policy.
+## 任务目标
+- 构建一个完整的 MAS 任务工作区，使其能够按策略校验并推进状态。
 
-## Business Context
-- The repository is evolving from architecture notes into an executable delivery mechanism.
+## 业务背景
+- 这个仓库正在从架构说明演进为可执行的交付机制。
 
-## Scope
+## 范围
 ### In Scope
-- Fixed workspace structure
-- State validation
-- Transition control
+- 固定工作区结构
+- 状态校验
+- 状态流转控制
 ### Out Of Scope
-- Deployment automation
+- 部署自动化
 
-## Inputs And Outputs
-- Inputs: architecture design, workflow policy, task metadata
-- Outputs: scaffolded task workspace, validated state, transition controller
+## 输入输出
+- 输入：架构设计、工作流策略、任务元数据
+- 输出：脚手架化任务工作区、已校验状态、状态流转控制器
 
-## Acceptance Criteria
-- Scaffolded workspaces pass validation
-- State transitions enforce entry gates
-- Review decisions control pass and reject routing
+## 验收标准
+- 脚手架生成的工作区能够通过校验
+- 状态流转会执行入口门禁
+- 评审结论能够控制通过与驳回路由
 
-## Completion Checklist
-- [ ] Goal, scope, and acceptance criteria are explicit.
-- [ ] Business context and non-goals are captured.
-- [ ] The next department can consume the spec without asking for missing definitions.
+## 完成检查清单
+- [ ] 目标、范围和验收标准已明确。
+- [ ] 业务背景和非目标已记录。
+- [ ] 下一个部门无需补问缺失定义即可消费该规格。

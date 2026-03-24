@@ -1,5 +1,5 @@
-# Business Context
+# 业务背景
 
-- A support lead needs a single operational view of incoming tickets without switching between spreadsheet rows and chat threads.
-- The first release is intentionally narrow: one internal console, one support team, one queue, and a clear handoff path from triage to resolution.
-- This case is designed to exercise the full MAS mechanism across product clarification, prototype, API design, test gating, build planning, verification, and audit.
+- 本任务用于搭建一个可复用的 MAS V1 工作区，并为其配上可执行的工作流规则。
+
+- 该工作区旨在成为后续项目交付的稳定机制。

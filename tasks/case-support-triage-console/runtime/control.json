@@ -1,0 +1,18 @@
+{
+  "task_id": "case-support-triage-console",
+  "status": "queued",
+  "paused": false,
+  "pause_reason": null,
+  "current_blocker": null,
+  "lease": null,
+  "retry_policy": {
+    "total_attempts": 0,
+    "consecutive_failures": 0,
+    "last_error": null,
+    "last_failure_at": null
+  },
+  "pending_human_actions": [],
+  "last_event_id": 0,
+  "last_event_at": null,
+  "updated_at": "2026-03-24T10:30:00+08:00"
+}

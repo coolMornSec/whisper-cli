@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whisper-cli.local/schemas/runtime-event.schema.json",
+  "title": "MAS Runtime Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "ts",
+    "task_id",
+    "type",
+    "actor",
+    "summary",
+    "detail"
+  ],
+  "properties": {
+    "id": { "type": "integer", "minimum": 1 },
+    "ts": { "type": "string", "format": "date-time" },
+    "task_id": { "type": "string", "minLength": 1 },
+    "type": {
+      "type": "string",
+      "enum": [
+        "TASK_ENQUEUED",
+        "TASK_LEASED",
+        "LEASE_RELEASED",
+        "AGENT_STARTED",
+        "AGENT_COMPLETED",
+        "AGENT_FAILED",
+        "STATE_TRANSITIONED",
+        "GATE_BLOCKED",
+        "REVIEW_DECISION_CHANGED",
+        "AUDIT_DECISION_CHANGED",
+        "HUMAN_INTERVENTION",
+        "TASK_COMPLETED"
+      ]
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["human", "agent", "system"] },
+        "id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "summary": { "type": "string", "minLength": 1 },
+    "detail": { "type": "object" },
+    "state": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": { "type": ["string", "null"] },
+        "to": { "type": "string" }
+      }
+    },
+    "department": { "type": ["string", "null"] },
+    "stage": { "type": ["string", "null"] }
+  }
+}

@@ -1,6 +1,6 @@
-# Allowed Files
+# 允许文件
 
-## Department Paths
+## 部门路径
 - zhongshu -> 00-intake/, 01-spec/
 - menxia -> 02-review/
 - shangshu -> 03-plan/

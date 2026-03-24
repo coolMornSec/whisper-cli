@@ -1,5 +1,5 @@
-# Non-Goals
+# 非目标
 
-## Deferred Items
-- Do not implement a runtime agent scheduler in this phase.
-- Do not cover deployment or external integrations in this phase.
+## 暂缓项
+- 本阶段不实现运行时 Agent 调度器。
+- 本阶段不覆盖部署或外部集成。

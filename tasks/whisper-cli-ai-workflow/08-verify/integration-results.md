@@ -1,4 +1,4 @@
-# Integration Results
+# 集成结果
 
-## Verification Summary
-- Confirm the workspace, state machine, and permission rules validate as one system.
+## 验证摘要
+- 确认工作区、状态机和权限规则可以作为一个整体通过校验。

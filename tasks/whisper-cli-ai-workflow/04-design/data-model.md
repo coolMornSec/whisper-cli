@@ -1,8 +1,8 @@
-# Data Model
+# 数据模型
 
-## Entities
-- manifest.json stores task policy, routing, and artifact ownership.
-- state.json stores the active workflow state, agents, and approved artifacts.
+## 实体
+- manifest.json 存储任务策略、路由和交付物归属。
+- state.json 存储当前工作流状态、活跃 Agent 和已批准产物。
 
-## State Records
-- agent-log.md stores stage-level execution evidence and handoff context.
+## 状态记录
+- agent-log.md 存储阶段级执行证据和交接上下文。

@@ -1,4 +1,4 @@
-# Contract Results
+# 契约结果
 
-## Verification Summary
-- Confirm manifest and state remain aligned with artifact paths and workflow policy.
+## 验证摘要
+- 确认 manifest 与 state 仍与产物路径和工作流策略保持一致。

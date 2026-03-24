@@ -26,7 +26,7 @@ async function writeJson(filePath, value) {
 
 async function setReviewDecision(filePath, decision) {
   const review = await readFile(filePath, 'utf8');
-  const nextReview = review.replace(/## Decision\s*\r?\n-\s*[a-zA-Z]+/, `## Decision\n- ${decision}`);
+  const nextReview = review.replace(/## (?:Decision|结论)\s*\r?\n-\s*[^\r\n]+/u, `## 结论\n- ${decision}`);
   await writeFile(filePath, nextReview, 'utf8');
 }
 
@@ -66,7 +66,7 @@ test('scaffoldTaskWorkspace initializes reviews as pending and keeps approvals c
   const requirementReview = await readFile(join(rootDir, 'tasks/pending-task/02-review/requirement-review.md'), 'utf8');
   const state = await readJson(join(rootDir, 'tasks/pending-task/state.json'));
 
-  assert.match(requirementReview, /## Decision\s*\r?\n-\s*pending/);
+  assert.match(requirementReview, /## 结论\s*\r?\n-\s*待定/);
   assert.deepEqual(state.approved_artifacts, {
     spec: false,
     prototype: false,
@@ -90,12 +90,12 @@ test('scaffoldTaskWorkspace generates a standard AGENT contract for each task', 
 
   const agentDoc = await readFile(join(rootDir, 'tasks/agent-task/AGENT.md'), 'utf8');
 
-  assert.match(agentDoc, /# Agent Execution Contract/);
-  assert.match(agentDoc, /## Authority Order/);
-  assert.match(agentDoc, /## Department Role Map/);
+  assert.match(agentDoc, /# Agent 执行约定/);
+  assert.match(agentDoc, /## 权限优先级/);
+  assert.match(agentDoc, /## 部门角色映射/);
   assert.match(agentDoc, /`yushitai`/);
   assert.match(agentDoc, /`state\.json`/);
-  assert.match(agentDoc, /## Completion Protocol/);
+  assert.match(agentDoc, /## 完成交接协议/);
 });
 
 test('validateTaskWorkspace accepts a scaffolded workspace with valid state and manifest', async () => {
@@ -170,7 +170,7 @@ test('validateTaskWorkspace rejects department deliverables that miss required c
   const report = await validateTaskWorkspace({ rootDir, taskId: 'bad-contract' });
   assert.equal(report.valid, false);
   assert.ok(report.errors.some(error => error.includes('03-plan/task-breakdown.md')));
-  assert.ok(report.errors.some(error => error.includes('Deliverable Mapping') || error.includes('Completion Checklist')));
+  assert.ok(report.errors.some(error => error.includes('交付物映射') || error.includes('完成检查清单')));
 });
 
 test('validateTaskWorkspace rejects AGENT documents that break the standard contract', async () => {
@@ -187,7 +187,7 @@ test('validateTaskWorkspace rejects AGENT documents that break the standard cont
   const report = await validateTaskWorkspace({ rootDir, taskId: 'bad-agent' });
   assert.equal(report.valid, false);
   assert.ok(report.errors.some(error => error.includes('AGENT.md')));
-  assert.ok(report.errors.some(error => error.includes('Authority Order') || error.includes('Department Role Map')));
+  assert.ok(report.errors.some(error => error.includes('权限优先级') || error.includes('部门角色映射')));
 });
 
 test('transitionTaskState advances the workflow and syncs execution ownership', async () => {
@@ -225,7 +225,7 @@ test('transitionTaskState enforces entry gates before entering review states', a
 
   await assert.rejects(
     transitionTaskState({ rootDir, taskId: 'gated-task', toState: 'REQUIREMENT_REVIEW' }),
-    /Task Goal|Acceptance Criteria|Non-Goals/
+    /任务目标|验收标准|非目标/
   );
 });
 
@@ -243,7 +243,7 @@ test('transitionTaskState binds approved artifacts to passing review decisions',
 
   assert.equal(reviewState.approved_artifacts.spec, false);
 
-  await setReviewDecision(join(rootDir, 'tasks/approval-task/02-review/requirement-review.md'), 'pass');
+  await setReviewDecision(join(rootDir, 'tasks/approval-task/02-review/requirement-review.md'), '通过');
 
   const plannedState = await transitionTaskState({
     rootDir,
@@ -267,7 +267,7 @@ test('transitionTaskState uses review decisions to route to pass and reject bran
 
   await transitionTaskState({ rootDir, taskId: 'review-task', toState: 'SPEC_DRAFT' });
   await transitionTaskState({ rootDir, taskId: 'review-task', toState: 'REQUIREMENT_REVIEW' });
-  await setReviewDecision(join(rootDir, 'tasks/review-task/02-review/requirement-review.md'), 'pass');
+  await setReviewDecision(join(rootDir, 'tasks/review-task/02-review/requirement-review.md'), '通过');
 
   const plannedState = await transitionTaskState({
     rootDir,
@@ -286,7 +286,7 @@ test('transitionTaskState uses review decisions to route to pass and reject bran
   resetState.approved_artifacts.spec = false;
   await writeJson(join(rootDir, 'tasks/review-task/state.json'), resetState);
 
-  await setReviewDecision(join(rootDir, 'tasks/review-task/02-review/requirement-review.md'), 'reject');
+  await setReviewDecision(join(rootDir, 'tasks/review-task/02-review/requirement-review.md'), '驳回');
 
   const rejectedState = await transitionTaskState({
     rootDir,
@@ -350,9 +350,9 @@ test('auditTaskWorkspace escalates governance drift back to TASK_PLANNED', async
 
   assert.ok(state.blocked_by.some(entry => entry.includes('TASK_PLANNED')));
   assert.ok(state.risks.some(risk => risk.owner === 'audit-agent'));
-  assert.match(review, /## Decision\s*\r?\n-\s*reject/);
-  assert.match(review, /## Escalation/);
-  assert.match(findings, /## Notifications/);
+  assert.match(review, /## 结论\s*\r?\n-\s*驳回/);
+  assert.match(review, /## 升级处理/);
+  assert.match(findings, /## 通知/);
 });
 
 test('auditTaskWorkspace escalates execution drift back to BUILD_IN_PROGRESS', async () => {
@@ -383,7 +383,7 @@ test('auditTaskWorkspace escalates execution drift back to BUILD_IN_PROGRESS', a
   assert.ok(report.findings.some(finding => finding.category === 'execution'));
 
   const compliance = await readFile(join(rootDir, 'tasks/audit-execution/09-audit/compliance.md'), 'utf8');
-  assert.match(compliance, /## Recommended Action/);
+  assert.match(compliance, /## 建议动作/);
   assert.match(compliance, /BUILD_IN_PROGRESS/);
 });
 

@@ -1,4 +1,4 @@
-﻿# mas-v1-architecture Rules
+﻿# mas-v1-architecture 规则
 
 ## 命中规则清单
 
@@ -92,3 +92,4 @@
 - 约束内容: 主文档和配套 workflow 文档必须恢复为正常中文可读内容，不能残留真实 `?` 占位导致语义丢失
 - 严重级别: high
 - 检查方式: review + 文件检查
+

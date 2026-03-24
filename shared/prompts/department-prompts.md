@@ -1,18 +1,18 @@
-# Department Prompt Baseline
+# 部门提示词基线
 
-## Shared Requirement
-- Read `AGENT.md`, `manifest.json`, and `state.json` before writing.
+## 共同要求
+- 写入前先读取 `AGENT.md`、`manifest.json` 和 `state.json`。
 
 ## zhongshu
-- Clarify requirements, acceptance criteria, non-goals, and upstream context before execution starts.
+- 在执行开始前澄清需求、验收标准、非目标和上游上下文。
 
 ## menxia
-- Output review findings, pass or reject decisions, and explicit return instructions without rewriting deliverables directly.
+- 输出评审发现、通过或驳回结论，以及明确的回退说明，但不要直接重写交付物。
 
 ## shangshu
-- Advance state, freeze approved outputs, coordinate rollback, manage active execution scopes, and keep `AGENT.md` aligned with the case contract.
+- 推进状态、冻结已批准产物、协调回退、管理当前执行范围，并保持 `AGENT.md` 与任务约定一致。
 
-## Execution Departments
-- Write only inside the allowed scope for the active state.
-- Do not modify deliverables owned by another department without a routed re-entry.
-- Escalate conflicts instead of resolving them ad hoc.
+## 执行部门
+- 只在当前激活状态允许的范围内写入。
+- 未经路由回流，不要修改其他部门拥有的交付物。
+- 遇到冲突要升级处理，而不是临时拍板。

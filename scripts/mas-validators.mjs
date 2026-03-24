@@ -14,6 +14,7 @@ import { deriveApprovedArtifacts } from './mas-approvals.mjs';
 import { DELIVERABLE_CONTRACTS, ORCHESTRATOR_CONTRACTS } from './mas-contracts.mjs';
 import { parseDecision, validateStateEntryGate } from './mas-gates.mjs';
 import { DEFAULT_CONSTRAINTS, DEFAULT_ROUTING_POLICY, STATE_DEPARTMENTS, STATE_TRANSITIONS } from './mas-policy.mjs';
+import { EVENT_TYPES, RUNTIME_STATUSES } from './mas-runtime-store.mjs';
 import { allowedWritePathsForState, arrayEquals, artifactPaths, isObject, resolveTaskFile, taskRoot, unique } from './mas-utils.mjs';
 
 export const CORE_MARKDOWN_SECTIONS = Object.fromEntries(
@@ -205,6 +206,139 @@ function validateRiskList(risks, errors) {
   }
 }
 
+function validateRuntimeControl(control, taskId, errors) {
+  if (!isObject(control)) {
+    errors.push('runtime/control.json must be an object');
+    return;
+  }
+
+  for (const key of [
+    'task_id',
+    'status',
+    'paused',
+    'pause_reason',
+    'current_blocker',
+    'lease',
+    'retry_policy',
+    'pending_human_actions',
+    'last_event_id',
+    'last_event_at',
+    'updated_at'
+  ]) {
+    if (!(key in control)) {
+      errors.push(`runtime/control.json is missing field: ${key}`);
+    }
+  }
+
+  if (control.task_id !== taskId) {
+    errors.push(`runtime/control.task_id must match the directory task ID: ${taskId}`);
+  }
+  if (!RUNTIME_STATUSES.includes(control.status)) {
+    errors.push(`runtime/control.status must be one of: ${RUNTIME_STATUSES.join(', ')}`);
+  }
+  if (typeof control.paused !== 'boolean') {
+    errors.push('runtime/control.paused must be a boolean');
+  }
+  if (!(control.pause_reason === null || typeof control.pause_reason === 'string')) {
+    errors.push('runtime/control.pause_reason must be null or a string');
+  }
+
+  if (!(control.current_blocker === null || isObject(control.current_blocker))) {
+    errors.push('runtime/control.current_blocker must be null or an object');
+  } else if (isObject(control.current_blocker)) {
+    for (const key of ['kind', 'message', 'at']) {
+      if (!(key in control.current_blocker)) {
+        errors.push(`runtime/control.current_blocker is missing field: ${key}`);
+      }
+    }
+    if (typeof control.current_blocker.at !== 'string' || Number.isNaN(Date.parse(control.current_blocker.at))) {
+      errors.push('runtime/control.current_blocker.at must be a valid ISO 8601 timestamp');
+    }
+  }
+
+  if (!(control.lease === null || isObject(control.lease))) {
+    errors.push('runtime/control.lease must be null or an object');
+  } else if (isObject(control.lease)) {
+    for (const key of ['owner', 'token', 'acquired_at', 'heartbeat_at', 'expires_at']) {
+      if (!(key in control.lease)) {
+        errors.push(`runtime/control.lease is missing field: ${key}`);
+      }
+    }
+  }
+
+  if (!isObject(control.retry_policy)) {
+    errors.push('runtime/control.retry_policy must be an object');
+  } else {
+    for (const key of ['total_attempts', 'consecutive_failures', 'last_error', 'last_failure_at']) {
+      if (!(key in control.retry_policy)) {
+        errors.push(`runtime/control.retry_policy is missing field: ${key}`);
+      }
+    }
+  }
+
+  validateStringArray('runtime/control.pending_human_actions', control.pending_human_actions, errors, { allowEmpty: true });
+
+  if (!Number.isInteger(control.last_event_id) || control.last_event_id < 0) {
+    errors.push('runtime/control.last_event_id must be a non-negative integer');
+  }
+  if (!(control.last_event_at === null || (typeof control.last_event_at === 'string' && !Number.isNaN(Date.parse(control.last_event_at))))) {
+    errors.push('runtime/control.last_event_at must be null or a valid ISO 8601 timestamp');
+  }
+  if (typeof control.updated_at !== 'string' || Number.isNaN(Date.parse(control.updated_at))) {
+    errors.push('runtime/control.updated_at must be a valid ISO 8601 timestamp');
+  }
+}
+
+function validateRuntimeEvents(eventsText, taskId, errors) {
+  const lines = eventsText.split(/\r?\n/u).filter(Boolean);
+  let previousId = 0;
+
+  for (const [index, line] of lines.entries()) {
+    let event;
+    try {
+      event = JSON.parse(line);
+    } catch (error) {
+      errors.push(`runtime/events.jsonl line ${index + 1} is not valid JSON: ${error.message}`);
+      continue;
+    }
+
+    if (!isObject(event)) {
+      errors.push(`runtime/events.jsonl line ${index + 1} must be an object`);
+      continue;
+    }
+
+    for (const key of ['id', 'ts', 'task_id', 'type', 'actor', 'summary', 'detail']) {
+      if (!(key in event)) {
+        errors.push(`runtime/events.jsonl line ${index + 1} is missing field: ${key}`);
+      }
+    }
+    if (!Number.isInteger(event.id) || event.id <= previousId) {
+      errors.push(`runtime/events.jsonl line ${index + 1} must have a strictly increasing integer id`);
+    }
+    previousId = Number.isInteger(event.id) ? event.id : previousId;
+    if (event.task_id !== taskId) {
+      errors.push(`runtime/events.jsonl line ${index + 1} must use task_id ${taskId}`);
+    }
+    if (typeof event.ts !== 'string' || Number.isNaN(Date.parse(event.ts))) {
+      errors.push(`runtime/events.jsonl line ${index + 1} must have a valid ISO 8601 ts`);
+    }
+    if (!EVENT_TYPES.includes(event.type)) {
+      errors.push(`runtime/events.jsonl line ${index + 1} has unknown type: ${event.type}`);
+    }
+    if (!isObject(event.actor)) {
+      errors.push(`runtime/events.jsonl line ${index + 1} must include an actor object`);
+    }
+    if (typeof event.summary !== 'string' || event.summary.length === 0) {
+      errors.push(`runtime/events.jsonl line ${index + 1} must include a non-empty summary`);
+    }
+    if (!isObject(event.detail)) {
+      errors.push(`runtime/events.jsonl line ${index + 1} must include a detail object`);
+    }
+  }
+
+  return lines.length === 0 ? 0 : previousId;
+}
+
 async function validateCurrentStateGate(rootDir, taskId, state, errors) {
   const gateErrors = await validateStateEntryGate({
     rootDir,
@@ -342,6 +476,17 @@ export async function validateTaskWorkspace({ rootDir, taskId }) {
 
   if (manifest) validateManifest(manifest, taskId, rootDir, errors);
   if (state) await validateState(state, manifest, taskId, rootDir, errors);
+
+  const runtimeControlText = await readTextFile(resolveTaskFile(rootDir, taskId, 'runtime/control.json'), 'runtime/control.json', errors);
+  const runtimeEventsText = await readTextFile(resolveTaskFile(rootDir, taskId, 'runtime/events.jsonl'), 'runtime/events.jsonl', errors);
+  const runtimeControl = runtimeControlText ? parseJson(runtimeControlText, 'runtime/control.json', errors) : null;
+  if (runtimeControl) {
+    validateRuntimeControl(runtimeControl, taskId, errors);
+  }
+  const lastEventId = runtimeEventsText ? validateRuntimeEvents(runtimeEventsText, taskId, errors) : 0;
+  if (runtimeControl && runtimeControl.last_event_id !== lastEventId) {
+    errors.push(`runtime/control.last_event_id must match the final event id in runtime/events.jsonl`);
+  }
 
   if (manifest?.artifacts) {
     for (const [artifact, relativePath] of Object.entries(manifest.artifacts)) {

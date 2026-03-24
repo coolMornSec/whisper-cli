@@ -1,13 +1,13 @@
-# UI Review
+# UI 评审
 
-## Review Scope
-- Check prototype structure, information architecture, and interaction coverage.
+## 评审范围
+- 检查原型结构、信息架构和交互覆盖情况。
 
-## Findings
-- Record whether the prototype is clear enough to support API design.
+## 发现
+- 记录原型是否足够清晰，可以支撑 API 设计。
 
-## Decision
-- pending
+## 结论
+- 待定
 
-## Follow-ups
-- If rejected, return to PROTOTYPE_DRAFT with missing interaction states.
+## 后续动作
+- 若驳回，返回 PROTOTYPE_DRAFT，并补齐缺失交互状态。

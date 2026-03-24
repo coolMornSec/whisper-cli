@@ -1,22 +1,22 @@
-# Rules Catalog
+# 规则清单
 
-## Enforced Rules
+## 生效规则
 
 ### RULE-001
-- Source: architecture design
-- Trigger: scaffold workspace
-- Constraint: generate the complete MAS task structure
-- Severity: high
-- Check: workflow validation
+- 来源: 架构设计
+- 触发条件: 生成工作区脚手架
+- 约束内容: 必须生成完整的 MAS 任务结构
+- 严重级别: high
+- 检查方式: 工作流校验
 
 ### RULE-002
-- Source: workflow policy
-- Trigger: transition state
-- Constraint: the target state must pass its entry gate before activation
-- Severity: high
-- Check: transition controller
+- 来源: 工作流策略
+- 触发条件: 进行状态流转
+- 约束内容: 目标状态在激活前必须通过入口门禁
+- 严重级别: high
+- 检查方式: 状态流转控制器
 
-## Completion Checklist
-- [ ] Each rule names its source, trigger, and check.
-- [ ] Rules cover both happy path and rollback path constraints.
-- [ ] The next review stage can trace every gate to a rule.
+## 完成检查清单
+- [ ] 每条规则都写明来源、触发条件和检查方式。
+- [ ] 规则同时覆盖正常路径和回退路径约束。
+- [ ] 下一次评审可以把每道门禁追溯到具体规则。

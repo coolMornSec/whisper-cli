@@ -1,5 +1,5 @@
-# Business Context
+# 业务背景
 
-- This task bootstraps a reusable MAS V1 workspace with enforceable workflow rules.
+- 本任务用于搭建一个可复用的 MAS V1 工作区，并为其配上可执行的工作流规则。
 
-- The workspace is intended to become a stable mechanism for future project delivery.
+- 该工作区旨在成为后续项目交付的稳定机制。

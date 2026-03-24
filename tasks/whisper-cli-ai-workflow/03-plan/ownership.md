@@ -1,13 +1,13 @@
-# Ownership
+# 责任归属
 
-## Department Ownership
-- zhongshu: intake and specification
-- menxia: review decisions
-- shangshu: state control and freeze management
-- gongbu: contract and implementation artifacts
-- xingbu: rules, tests, and verification
-- yushitai: audit and escalation
+## 部门归属
+- zhongshu: intake 与任务规格
+- menxia: 评审结论
+- shangshu: 状态控制与冻结管理
+- gongbu: 契约与实现产物
+- xingbu: 规则、测试与验证
+- yushitai: 审计与升级
 
-## Handover Rules
-- The receiving department must confirm upstream completion before changing the task state.
-- Rework must return to the owning production department, not be corrected inside review or audit.
+## 交接规则
+- 接收部门在变更任务状态前，必须确认上游已完成。
+- 返工必须退回到对应的生产部门，不能在评审或审计环节直接改正。

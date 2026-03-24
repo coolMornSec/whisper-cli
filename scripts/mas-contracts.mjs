@@ -2,17 +2,17 @@ export const DELIVERABLE_CONTRACTS = {
   'AGENT.md': {
     department: 'shangshu',
     headings: [
-      '# Agent Execution Contract',
-      '## Mission',
-      '## Authority Order',
-      '## Department Role Map',
-      '## Read Inputs',
-      '## Allowed Outputs',
-      '## Stage Execution Rules',
-      '## Escalation Rules',
-      '## Audit Hooks',
-      '## Case Overrides',
-      '## Completion Protocol'
+      '# Agent 执行约定',
+      '## 任务使命',
+      '## 权限优先级',
+      '## 部门角色映射',
+      '## 读取输入',
+      '## 允许输出',
+      '## 阶段执行规则',
+      '## 升级规则',
+      '## 审计钩子',
+      '## 任务覆盖项',
+      '## 完成交接协议'
     ],
     snippets: [
       '`zhongshu`',
@@ -30,153 +30,153 @@ export const DELIVERABLE_CONTRACTS = {
   },
   '00-intake/request.md': {
     department: 'zhongshu',
-    headings: ['# User Request']
+    headings: ['# 用户请求']
   },
   '00-intake/context.md': {
     department: 'zhongshu',
-    headings: ['# Business Context']
+    headings: ['# 业务背景']
   },
   '00-intake/constraints.md': {
     department: 'zhongshu',
-    headings: ['# Constraints']
+    headings: ['# 约束条件']
   },
   '01-spec/spec.md': {
     department: 'zhongshu',
     headings: [
-      '# Specification',
-      '## Task Goal',
-      '## Business Context',
-      '## Scope',
-      '## Inputs And Outputs',
-      '## Acceptance Criteria',
-      '## Completion Checklist'
+      '# 任务规格',
+      '## 任务目标',
+      '## 业务背景',
+      '## 范围',
+      '## 输入输出',
+      '## 验收标准',
+      '## 完成检查清单'
     ]
   },
   '01-spec/acceptance.md': {
     department: 'zhongshu',
-    headings: ['# Acceptance Criteria', '## Acceptance Checklist']
+    headings: ['# 验收标准', '## 验收检查清单']
   },
   '01-spec/non-goals.md': {
     department: 'zhongshu',
-    headings: ['# Non-Goals', '## Deferred Items']
+    headings: ['# 非目标', '## 暂缓项']
   },
   '02-review/requirement-review.md': {
     department: 'menxia',
-    headings: ['# Requirement Review', '## Review Scope', '## Findings', '## Decision', '## Follow-ups']
+    headings: ['# 需求评审', '## 评审范围', '## 发现', '## 结论', '## 后续动作']
   },
   '02-review/ui-review.md': {
     department: 'menxia',
-    headings: ['# UI Review', '## Review Scope', '## Findings', '## Decision', '## Follow-ups']
+    headings: ['# UI 评审', '## 评审范围', '## 发现', '## 结论', '## 后续动作']
   },
   '02-review/api-review.md': {
     department: 'menxia',
-    headings: ['# API Review', '## Review Scope', '## Findings', '## Decision', '## Follow-ups']
+    headings: ['# API 评审', '## 评审范围', '## 发现', '## 结论', '## 后续动作']
   },
   '02-review/test-review.md': {
     department: 'menxia',
-    headings: ['# Test Review', '## Review Scope', '## Findings', '## Decision', '## Follow-ups']
+    headings: ['# 测试评审', '## 评审范围', '## 发现', '## 结论', '## 后续动作']
   },
   '03-plan/task-breakdown.md': {
     department: 'libu_task_breakdown',
-    headings: ['# Task Breakdown', '## Workstreams', '## Deliverable Mapping', '## Completion Checklist']
+    headings: ['# 任务拆分', '## 工作流拆分', '## 交付物映射', '## 完成检查清单']
   },
   '03-plan/dependency-map.md': {
     department: 'libu_task_breakdown',
-    headings: ['# Dependency Map', '## Critical Path', '## Parallelization Notes']
+    headings: ['# 依赖关系图', '## 关键路径', '## 并行说明']
   },
   '03-plan/ownership.md': {
     department: 'libu_task_breakdown',
-    headings: ['# Ownership', '## Department Ownership', '## Handover Rules']
+    headings: ['# 责任归属', '## 部门归属', '## 交接规则']
   },
   '04-design/prototype.md': {
     department: 'libu_prototype',
-    headings: ['# Prototype Design', '## Page Map', '## Interaction Rules', '## Completion Checklist']
+    headings: ['# 原型设计', '## 页面结构', '## 交互规则', '## 完成检查清单']
   },
   '04-design/data-model.md': {
     department: 'gongbu',
-    headings: ['# Data Model', '## Entities', '## State Records']
+    headings: ['# 数据模型', '## 实体', '## 状态记录']
   },
   '04-design/migration-plan.md': {
     department: 'gongbu',
-    headings: ['# Migration Plan', '## Migration Steps', '## Rollback Notes']
+    headings: ['# 迁移计划', '## 迁移步骤', '## 回滚说明']
   },
   '05-rules/rules.md': {
     department: 'xingbu',
-    headings: ['# Rules Catalog', '## Enforced Rules', '## Completion Checklist']
+    headings: ['# 规则清单', '## 生效规则', '## 完成检查清单']
   },
   '05-rules/allowed-files.md': {
     department: 'xingbu',
-    headings: ['# Allowed Files', '## Department Paths']
+    headings: ['# 允许文件', '## 部门路径']
   },
   '05-rules/dependency-policy.md': {
     department: 'xingbu',
-    headings: ['# Dependency Policy', '## Allowed Dependencies', '## Prohibited Changes']
+    headings: ['# 依赖策略', '## 允许依赖', '## 禁止变更']
   },
   '05-rules/quality-gates.md': {
     department: 'xingbu',
-    headings: ['# Quality Gates', '## Gate Matrix']
+    headings: ['# 质量门禁', '## 门禁矩阵']
   },
   '06-tests/test-cases.md': {
     department: 'xingbu',
-    headings: ['# Test Cases', '## Case List', '## Coverage Map']
+    headings: ['# 测试用例', '## 用例列表', '## 覆盖范围']
   },
   '07-build/generated-summary.md': {
     department: 'gongbu',
-    headings: ['# Build Summary', '## Generated Outputs', '## Completion Checklist']
+    headings: ['# 构建总结', '## 生成产物', '## 完成检查清单']
   },
   '08-verify/test-results.md': {
     department: 'xingbu',
-    headings: ['# Test Results', '## Verification Summary']
+    headings: ['# 测试结果', '## 验证摘要']
   },
   '08-verify/contract-results.md': {
     department: 'xingbu',
-    headings: ['# Contract Results', '## Verification Summary']
+    headings: ['# 契约结果', '## 验证摘要']
   },
   '08-verify/build-results.md': {
     department: 'xingbu',
-    headings: ['# Build Results', '## Verification Summary']
+    headings: ['# 构建结果', '## 验证摘要']
   },
   '08-verify/integration-results.md': {
     department: 'xingbu',
-    headings: ['# Integration Results', '## Verification Summary']
+    headings: ['# 集成结果', '## 验证摘要']
   },
   '09-audit/review.md': {
     department: 'yushitai',
-    headings: ['# Audit Review', '## Review Scope', '## Findings', '## Decision', '## Follow-ups', '## Escalation']
+    headings: ['# 审计评审', '## 评审范围', '## 发现', '## 结论', '## 后续动作', '## 升级处理']
   },
   '09-audit/findings.md': {
     department: 'yushitai',
-    headings: ['# Audit Findings', '## Findings List', '## Notifications']
+    headings: ['# 审计发现', '## 发现列表', '## 通知']
   },
   '09-audit/risk-register.md': {
     department: 'yushitai',
-    headings: ['# Risk Register', '## Active Risks', '## Rollback Recommendation']
+    headings: ['# 风险登记', '## 活跃风险', '## 回退建议']
   },
   '09-audit/compliance.md': {
     department: 'yushitai',
-    headings: ['# Compliance Check', '## Compliance Status', '## Recommended Action']
+    headings: ['# 合规检查', '## 合规状态', '## 建议动作']
   },
   'agent-log.md': {
     department: 'shangshu',
-    headings: ['# Agent Execution Log', '## Stage Records']
+    headings: ['# Agent 执行日志', '## 阶段记录']
   }
 };
 
 export const ORCHESTRATOR_CONTRACTS = {
-  'orchestrator/state-machine.md': ['# State Machine', '## Main Flow', '## Failure Recovery'],
-  'orchestrator/routing-rules.md': ['# Routing Rules', '## Peer Deliberation', '## Parallel Execution', '## Freeze Points'],
-  'orchestrator/role-permissions.md': ['# Role Permissions', '## Department Write Boundaries']
+  'orchestrator/state-machine.md': ['# 状态机', '## 主流程', '## 失败恢复'],
+  'orchestrator/routing-rules.md': ['# 路由规则', '## 平级协商', '## 并行执行', '## 冻结点'],
+  'orchestrator/role-permissions.md': ['# 角色权限', '## 部门写入边界']
 };
 
 export function renderDeliverableContractsPolicy() {
-  const lines = ['# Deliverable Contracts', ''];
+  const lines = ['# 交付物约定', ''];
 
   for (const [relativePath, contract] of Object.entries(DELIVERABLE_CONTRACTS)) {
     lines.push(`## ${relativePath}`);
-    lines.push(`- Department: \`${contract.department}\``);
-    lines.push(`- Required Sections: ${contract.headings.map(heading => `\`${heading}\``).join(', ')}`);
+    lines.push(`- 部门: \`${contract.department}\``);
+    lines.push(`- 必填章节: ${contract.headings.map(heading => `\`${heading}\``).join(', ')}`);
     if (contract.snippets?.length) {
-      lines.push(`- Required Markers: ${contract.snippets.map(snippet => `\`${snippet}\``).join(', ')}`);
+      lines.push(`- 必需标记: ${contract.snippets.map(snippet => `\`${snippet}\``).join(', ')}`);
     }
     lines.push('');
   }

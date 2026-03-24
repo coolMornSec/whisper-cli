@@ -1,6 +1,6 @@
-# State Machine
+# 状态机
 
-## Main Flow
+## 主流程
 ```text
 INTAKE
 -> SPEC_DRAFT
@@ -19,7 +19,7 @@ INTAKE
 -> DONE
 ```
 
-## Failure Recovery
+## 失败恢复
 ```text
 REQUIREMENT_REJECTED -> SPEC_DRAFT
 UI_REJECTED -> PROTOTYPE_DRAFT

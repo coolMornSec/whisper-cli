@@ -54,6 +54,15 @@ export function defaultDepartments() {
   };
 }
 
+export function departmentForAgent(agentId, departments = defaultDepartments()) {
+  for (const [department, agents] of Object.entries(departments)) {
+    if (agents.includes(agentId)) {
+      return department;
+    }
+  }
+  return null;
+}
+
 export function allowedWritePathsForState(state) {
   const departments = STATE_DEPARTMENTS[state] ?? [];
   return unique(departments.flatMap(department => DEPARTMENT_WRITE_SCOPES[department] ?? []));

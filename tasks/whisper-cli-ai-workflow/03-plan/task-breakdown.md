@@ -1,19 +1,19 @@
-# Task Breakdown
+# 任务拆分
 
-## Workstreams
-- Scaffold workflow workspace
-- Define manifest and state policy
-- Enforce transitions and entry gates
-- Validate sample task end to end
+## 工作流拆分
+- 搭建工作流工作区脚手架
+- 定义 manifest 与 state 策略
+- 执行状态流转与入口门禁
+- 端到端校验示例任务
 
-## Deliverable Mapping
-- zhongshu -> intake and specification
-- menxia -> review records
-- gongbu -> design contract and build summary
-- xingbu -> rules, tests, verification
-- yushitai -> audit evidence
+## 交付物映射
+- zhongshu -> intake 与任务规格
+- menxia -> 评审记录
+- gongbu -> 设计契约与构建总结
+- xingbu -> 规则、测试、验证
+- yushitai -> 审计证据
 
-## Completion Checklist
-- [ ] Each workstream has a concrete owner.
-- [ ] Each workstream maps to a fixed deliverable.
-- [ ] No build work starts before the upstream gates are identified.
+## 完成检查清单
+- [ ] 每个工作流都有明确负责人。
+- [ ] 每个工作流都映射到固定交付物。
+- [ ] 在明确上游门禁前，不会启动构建工作。

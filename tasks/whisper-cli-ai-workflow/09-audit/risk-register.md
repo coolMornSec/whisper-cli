@@ -1,7 +1,7 @@
-# Risk Register
+# 风险登记
 
-## Active Risks
-- R-001: future runtime orchestration will need stronger event logging and execution locking.
+## 活跃风险
+- R-001: 未来的运行时编排需要更强的事件日志和执行锁定能力。
 
-## Rollback Recommendation
-- None.
+## 回退建议
+- 无。

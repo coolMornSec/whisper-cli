@@ -1,4 +1,4 @@
-﻿# mas-v1-architecture Cases
+﻿# mas-v1-architecture 用例
 
 ## 测试用例
 
@@ -127,3 +127,4 @@
 - 预期输出: 配套文档恢复为正常中文，且与主设计稿机制一致
 - 失败信号: workflow 文档仍然乱码、语义丢失或与主文档矛盾
 - 测试级别: review
+
