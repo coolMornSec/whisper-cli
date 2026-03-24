@@ -2,6 +2,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { basename, dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { auditTaskWorkspace } from './mas-audit.mjs';
 import { transitionTaskState } from './mas-controller.mjs';
 import { renderSupportFiles } from './mas-support.mjs';
 import { renderTaskFiles } from './mas-task-files.mjs';
@@ -68,10 +69,11 @@ export async function scaffoldTaskWorkspace({
   };
 }
 
-export { transitionTaskState, validateTaskWorkspace };
+export { auditTaskWorkspace, transitionTaskState, validateTaskWorkspace };
 export const scaffoldTaskSet = scaffoldTaskWorkspace;
 export const validateTaskSet = validateTaskWorkspace;
 export const transitionTaskSet = transitionTaskState;
+export const auditTaskSet = auditTaskWorkspace;
 
 function parseArgs(argv) {
   const [command, ...rest] = argv;
@@ -109,9 +111,9 @@ async function runCli() {
   const rootDir = process.cwd();
   const { command, options } = parseArgs(process.argv.slice(2));
 
-  if (!command || !['scaffold', 'validate', 'transition'].includes(command)) {
+  if (!command || !['scaffold', 'validate', 'transition', 'audit'].includes(command)) {
     console.error(
-      'Usage: node scripts/task-docs.mjs <scaffold|validate|transition> --task-id <task-id> [--title <title>] [--goal <goal>] [--to <state>]'
+      'Usage: node scripts/task-docs.mjs <scaffold|validate|transition|audit> --task-id <task-id> [--title <title>] [--goal <goal>] [--to <state>]'
     );
     process.exitCode = 1;
     return;
@@ -147,6 +149,21 @@ async function runCli() {
       toState: options.toState
     });
     console.log(JSON.stringify({ status: 'transitioned', state: result }, null, 2));
+    return;
+  }
+
+  if (command === 'audit') {
+    if (!options.taskId) {
+      console.error('audit requires --task-id');
+      process.exitCode = 1;
+      return;
+    }
+
+    const result = await auditTaskWorkspace({
+      rootDir,
+      taskId: options.taskId
+    });
+    console.log(JSON.stringify({ status: 'audited', report: result }, null, 2));
     return;
   }
 

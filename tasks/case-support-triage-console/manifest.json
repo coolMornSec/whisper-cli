@@ -1,0 +1,86 @@
+{
+  "task_id": "case-support-triage-console",
+  "title": "Support Triage Console",
+  "priority": "high",
+  "goal": "Deliver a support ticket triage console through the full MAS V1 workflow",
+  "human_approvals_required": [
+    "REQUIREMENT_REVIEW",
+    "UI_REVIEW",
+    "API_REVIEW",
+    "TEST_REVIEW",
+    "AUDIT_REVIEW"
+  ],
+  "departments": {
+    "zhongshu": [
+      "spec-agent"
+    ],
+    "menxia": [
+      "requirement-reviewer",
+      "ui-reviewer",
+      "api-reviewer",
+      "test-reviewer"
+    ],
+    "shangshu": [
+      "orchestrator-agent"
+    ],
+    "libu_task_breakdown": [
+      "task-breakdown-agent"
+    ],
+    "libu_prototype": [
+      "prototype-agent"
+    ],
+    "gongbu": [
+      "api-agent",
+      "frontend-agent",
+      "backend-agent",
+      "database-agent"
+    ],
+    "xingbu": [
+      "rules-agent",
+      "test-agent",
+      "verify-agent"
+    ],
+    "yushitai": [
+      "audit-agent"
+    ]
+  },
+  "artifacts": {
+    "spec": "tasks/case-support-triage-console/01-spec/spec.md",
+    "prototype": "tasks/case-support-triage-console/04-design/prototype.md",
+    "api_contract": "tasks/case-support-triage-console/04-design/api-contract.yaml",
+    "rules": "tasks/case-support-triage-console/05-rules/rules.md",
+    "tests": "tasks/case-support-triage-console/06-tests/test-cases.md",
+    "audit": "tasks/case-support-triage-console/09-audit/review.md"
+  },
+  "routing_policy": {
+    "peer_deliberation_states": [
+      "SPEC_DRAFT",
+      "REQUIREMENT_REVIEW",
+      "TASK_PLANNED",
+      "UI_REVIEW",
+      "API_REVIEW"
+    ],
+    "parallel_execution_states": [
+      "BUILD_IN_PROGRESS",
+      "INTEGRATION_VERIFY"
+    ],
+    "serialized_gates": [
+      "REQUIREMENT_REVIEW",
+      "UI_REVIEW",
+      "API_REVIEW",
+      "TEST_REVIEW",
+      "AUDIT_REVIEW"
+    ],
+    "freeze_points": [
+      "UI_REVIEW",
+      "API_REVIEW",
+      "TEST_REVIEW"
+    ]
+  },
+  "constraints": {
+    "prototype_first": true,
+    "api_follows_prototype": true,
+    "tests_before_code": true,
+    "deployment_in_scope": false
+  }
+}

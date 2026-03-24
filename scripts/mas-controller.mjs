@@ -1,10 +1,10 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
+import { deriveApprovedArtifacts } from './mas-approvals.mjs';
 import { WORKFLOW_STATES } from './mas-constants.mjs';
 import { assertStateEntryGate } from './mas-gates.mjs';
 import { STATE_TRANSITIONS } from './mas-policy.mjs';
 import { activeAgentsForState, allowedWritePathsForState, ownerForState, resolveTaskFile } from './mas-utils.mjs';
-import { expectedApprovedArtifacts } from './mas-task-files.mjs';
 
 async function readJson(filePath) {
   return JSON.parse(await readFile(filePath, 'utf8'));
@@ -31,6 +31,12 @@ export async function transitionTaskState({ rootDir, taskId, toState }) {
 
   await assertStateEntryGate({ rootDir, taskId, targetState: toState });
 
+  const approvedArtifacts = await deriveApprovedArtifacts({
+    rootDir,
+    taskId,
+    currentState: toState
+  });
+
   const nextState = {
     ...state,
     previous_state: state.current_state,
@@ -38,7 +44,7 @@ export async function transitionTaskState({ rootDir, taskId, toState }) {
     owner: ownerForState(toState, manifest.departments),
     active_agents: activeAgentsForState(toState, manifest.departments),
     allowed_write_paths: allowedWritePathsForState(toState),
-    approved_artifacts: expectedApprovedArtifacts(toState),
+    approved_artifacts: approvedArtifacts,
     blocked_by: [],
     updated_at: new Date().toISOString()
   };

@@ -22,3 +22,8 @@
 - Scaffolded workspaces pass validation
 - State transitions enforce entry gates
 - Review decisions control pass and reject routing
+
+## Completion Checklist
+- [ ] Goal, scope, and acceptance criteria are explicit.
+- [ ] Business context and non-goals are captured.
+- [ ] The next department can consume the spec without asking for missing definitions.

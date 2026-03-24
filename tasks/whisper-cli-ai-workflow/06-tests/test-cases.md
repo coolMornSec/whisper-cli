@@ -13,3 +13,6 @@
 ### CASE-003
 - Input: rejected review decision
 - Expected Output: the controller routes to the matching rejected state
+
+## Coverage Map
+- Covers scaffold, validation, transition gating, approval synchronization, and review-driven rollback.

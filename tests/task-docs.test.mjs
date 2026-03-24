@@ -3,7 +3,7 @@ import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-import { scaffoldTaskWorkspace, transitionTaskState, validateTaskWorkspace } from '../scripts/task-docs.mjs';
+import { auditTaskWorkspace, scaffoldTaskWorkspace, transitionTaskState, validateTaskWorkspace } from '../scripts/task-docs.mjs';
 
 const DEFAULT_TASK_ID = 'whisper-cli-ai-workflow';
 const tests = [];
@@ -22,6 +22,12 @@ async function readJson(filePath) {
 
 async function writeJson(filePath, value) {
   await writeFile(filePath, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
+}
+
+async function setReviewDecision(filePath, decision) {
+  const review = await readFile(filePath, 'utf8');
+  const nextReview = review.replace(/## Decision\s*\r?\n-\s*[a-zA-Z]+/, `## Decision\n- ${decision}`);
+  await writeFile(filePath, nextReview, 'utf8');
 }
 
 test('scaffoldTaskWorkspace creates the complete MAS task workspace and control files', async () => {
@@ -46,6 +52,50 @@ test('scaffoldTaskWorkspace creates the complete MAS task workspace and control 
   assert.equal(Boolean(manifest.departments.libu_prototype.length), true);
   assert.equal(state.current_state, 'INTAKE');
   assert.deepEqual(state.allowed_write_paths, ['00-intake/', '01-spec/']);
+});
+
+test('scaffoldTaskWorkspace initializes reviews as pending and keeps approvals closed at intake', async () => {
+  const rootDir = await makeWorkspace();
+  await scaffoldTaskWorkspace({
+    rootDir,
+    taskId: 'pending-task',
+    title: 'Pending Task',
+    goal: 'Validate review initialization'
+  });
+
+  const requirementReview = await readFile(join(rootDir, 'tasks/pending-task/02-review/requirement-review.md'), 'utf8');
+  const state = await readJson(join(rootDir, 'tasks/pending-task/state.json'));
+
+  assert.match(requirementReview, /## Decision\s*\r?\n-\s*pending/);
+  assert.deepEqual(state.approved_artifacts, {
+    spec: false,
+    prototype: false,
+    api_contract: false,
+    rules: false,
+    tests: false,
+    build: false,
+    verification: false,
+    audit: false
+  });
+});
+
+test('scaffoldTaskWorkspace generates a standard AGENT contract for each task', async () => {
+  const rootDir = await makeWorkspace();
+  await scaffoldTaskWorkspace({
+    rootDir,
+    taskId: 'agent-task',
+    title: 'Agent Task',
+    goal: 'Validate AGENT document scaffold'
+  });
+
+  const agentDoc = await readFile(join(rootDir, 'tasks/agent-task/AGENT.md'), 'utf8');
+
+  assert.match(agentDoc, /# Agent Execution Contract/);
+  assert.match(agentDoc, /## Authority Order/);
+  assert.match(agentDoc, /## Department Role Map/);
+  assert.match(agentDoc, /`yushitai`/);
+  assert.match(agentDoc, /`state\.json`/);
+  assert.match(agentDoc, /## Completion Protocol/);
 });
 
 test('validateTaskWorkspace accepts a scaffolded workspace with valid state and manifest', async () => {
@@ -106,6 +156,40 @@ test('validateTaskWorkspace rejects manifest data that breaks department split o
   assert.ok(report.errors.some(error => error.includes('manifest.artifacts.spec')));
 });
 
+test('validateTaskWorkspace rejects department deliverables that miss required completion sections', async () => {
+  const rootDir = await makeWorkspace();
+  await scaffoldTaskWorkspace({
+    rootDir,
+    taskId: 'bad-contract',
+    title: 'Bad Contract',
+    goal: 'Validate department deliverable contracts'
+  });
+
+  await writeFile(join(rootDir, 'tasks/bad-contract/03-plan/task-breakdown.md'), '# Task Breakdown\n', 'utf8');
+
+  const report = await validateTaskWorkspace({ rootDir, taskId: 'bad-contract' });
+  assert.equal(report.valid, false);
+  assert.ok(report.errors.some(error => error.includes('03-plan/task-breakdown.md')));
+  assert.ok(report.errors.some(error => error.includes('Deliverable Mapping') || error.includes('Completion Checklist')));
+});
+
+test('validateTaskWorkspace rejects AGENT documents that break the standard contract', async () => {
+  const rootDir = await makeWorkspace();
+  await scaffoldTaskWorkspace({
+    rootDir,
+    taskId: 'bad-agent',
+    title: 'Bad Agent',
+    goal: 'Validate AGENT standard enforcement'
+  });
+
+  await writeFile(join(rootDir, 'tasks/bad-agent/AGENT.md'), '# Agent Execution Contract\n\n## Mission\n- Incomplete.\n', 'utf8');
+
+  const report = await validateTaskWorkspace({ rootDir, taskId: 'bad-agent' });
+  assert.equal(report.valid, false);
+  assert.ok(report.errors.some(error => error.includes('AGENT.md')));
+  assert.ok(report.errors.some(error => error.includes('Authority Order') || error.includes('Department Role Map')));
+});
+
 test('transitionTaskState advances the workflow and syncs execution ownership', async () => {
   const rootDir = await makeWorkspace();
   await scaffoldTaskWorkspace({
@@ -145,6 +229,33 @@ test('transitionTaskState enforces entry gates before entering review states', a
   );
 });
 
+test('transitionTaskState binds approved artifacts to passing review decisions', async () => {
+  const rootDir = await makeWorkspace();
+  await scaffoldTaskWorkspace({
+    rootDir,
+    taskId: 'approval-task',
+    title: 'Approval Task',
+    goal: 'Validate review-driven approvals'
+  });
+
+  await transitionTaskState({ rootDir, taskId: 'approval-task', toState: 'SPEC_DRAFT' });
+  const reviewState = await transitionTaskState({ rootDir, taskId: 'approval-task', toState: 'REQUIREMENT_REVIEW' });
+
+  assert.equal(reviewState.approved_artifacts.spec, false);
+
+  await setReviewDecision(join(rootDir, 'tasks/approval-task/02-review/requirement-review.md'), 'pass');
+
+  const plannedState = await transitionTaskState({
+    rootDir,
+    taskId: 'approval-task',
+    toState: 'TASK_PLANNED'
+  });
+
+  assert.equal(plannedState.current_state, 'TASK_PLANNED');
+  assert.equal(plannedState.approved_artifacts.spec, true);
+  assert.equal(plannedState.approved_artifacts.prototype, false);
+});
+
 test('transitionTaskState uses review decisions to route to pass and reject branches', async () => {
   const rootDir = await makeWorkspace();
   await scaffoldTaskWorkspace({
@@ -156,6 +267,7 @@ test('transitionTaskState uses review decisions to route to pass and reject bran
 
   await transitionTaskState({ rootDir, taskId: 'review-task', toState: 'SPEC_DRAFT' });
   await transitionTaskState({ rootDir, taskId: 'review-task', toState: 'REQUIREMENT_REVIEW' });
+  await setReviewDecision(join(rootDir, 'tasks/review-task/02-review/requirement-review.md'), 'pass');
 
   const plannedState = await transitionTaskState({
     rootDir,
@@ -174,9 +286,7 @@ test('transitionTaskState uses review decisions to route to pass and reject bran
   resetState.approved_artifacts.spec = false;
   await writeJson(join(rootDir, 'tasks/review-task/state.json'), resetState);
 
-  let review = await readFile(join(rootDir, 'tasks/review-task/02-review/requirement-review.md'), 'utf8');
-  review = review.replace('- pass', '- reject');
-  await writeFile(join(rootDir, 'tasks/review-task/02-review/requirement-review.md'), review, 'utf8');
+  await setReviewDecision(join(rootDir, 'tasks/review-task/02-review/requirement-review.md'), 'reject');
 
   const rejectedState = await transitionTaskState({
     rootDir,
@@ -187,6 +297,94 @@ test('transitionTaskState uses review decisions to route to pass and reject bran
   assert.equal(rejectedState.current_state, 'REQUIREMENT_REJECTED');
   assert.equal(rejectedState.owner, 'spec-agent');
   assert.deepEqual(rejectedState.allowed_write_paths, ['00-intake/', '01-spec/']);
+});
+
+test('validateTaskWorkspace rejects approval state that disagrees with review decisions', async () => {
+  const rootDir = await makeWorkspace();
+  await scaffoldTaskWorkspace({
+    rootDir,
+    taskId: 'approval-mismatch',
+    title: 'Approval Mismatch',
+    goal: 'Validate approval binding'
+  });
+
+  const statePath = join(rootDir, 'tasks/approval-mismatch/state.json');
+  const state = await readJson(statePath);
+  state.current_state = 'REQUIREMENT_REVIEW';
+  state.previous_state = 'SPEC_DRAFT';
+  state.owner = 'requirement-reviewer';
+  state.active_agents = ['requirement-reviewer', 'ui-reviewer', 'api-reviewer', 'test-reviewer'];
+  state.allowed_write_paths = ['02-review/'];
+  state.approved_artifacts.spec = true;
+  await writeJson(statePath, state);
+
+  const report = await validateTaskWorkspace({ rootDir, taskId: 'approval-mismatch' });
+  assert.equal(report.valid, false);
+  assert.ok(report.errors.some(error => error.includes('state.approved_artifacts.spec')));
+});
+
+test('auditTaskWorkspace escalates governance drift back to TASK_PLANNED', async () => {
+  const rootDir = await makeWorkspace();
+  await scaffoldTaskWorkspace({
+    rootDir,
+    taskId: 'audit-governance',
+    title: 'Audit Governance',
+    goal: 'Validate governance escalation'
+  });
+
+  await writeFile(join(rootDir, 'tasks/audit-governance/03-plan/task-breakdown.md'), '# Task Breakdown\n', 'utf8');
+
+  const report = await auditTaskWorkspace({
+    rootDir,
+    taskId: 'audit-governance'
+  });
+
+  assert.equal(report.decision, 'reject');
+  assert.equal(report.recommendedRollbackState, 'TASK_PLANNED');
+  assert.equal(report.escalation.target, 'shangshu');
+  assert.ok(report.findings.some(finding => finding.category === 'governance'));
+
+  const state = await readJson(join(rootDir, 'tasks/audit-governance/state.json'));
+  const review = await readFile(join(rootDir, 'tasks/audit-governance/09-audit/review.md'), 'utf8');
+  const findings = await readFile(join(rootDir, 'tasks/audit-governance/09-audit/findings.md'), 'utf8');
+
+  assert.ok(state.blocked_by.some(entry => entry.includes('TASK_PLANNED')));
+  assert.ok(state.risks.some(risk => risk.owner === 'audit-agent'));
+  assert.match(review, /## Decision\s*\r?\n-\s*reject/);
+  assert.match(review, /## Escalation/);
+  assert.match(findings, /## Notifications/);
+});
+
+test('auditTaskWorkspace escalates execution drift back to BUILD_IN_PROGRESS', async () => {
+  const rootDir = await makeWorkspace();
+  await scaffoldTaskWorkspace({
+    rootDir,
+    taskId: 'audit-execution',
+    title: 'Audit Execution',
+    goal: 'Validate execution escalation'
+  });
+
+  const statePath = join(rootDir, 'tasks/audit-execution/state.json');
+  const state = await readJson(statePath);
+  state.current_state = 'INTEGRATION_VERIFY';
+  state.previous_state = 'BUILD_IN_PROGRESS';
+  state.owner = 'frontend-agent';
+  state.active_agents = ['frontend-agent', 'backend-agent', 'database-agent', 'rules-agent', 'test-agent', 'verify-agent'];
+  state.allowed_write_paths = ['02-review/'];
+  await writeJson(statePath, state);
+
+  const report = await auditTaskWorkspace({
+    rootDir,
+    taskId: 'audit-execution'
+  });
+
+  assert.equal(report.decision, 'reject');
+  assert.equal(report.recommendedRollbackState, 'BUILD_IN_PROGRESS');
+  assert.ok(report.findings.some(finding => finding.category === 'execution'));
+
+  const compliance = await readFile(join(rootDir, 'tasks/audit-execution/09-audit/compliance.md'), 'utf8');
+  assert.match(compliance, /## Recommended Action/);
+  assert.match(compliance, /BUILD_IN_PROGRESS/);
 });
 
 test('repository default workflow workspace stays valid end-to-end', async () => {

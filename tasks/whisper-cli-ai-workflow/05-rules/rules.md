@@ -15,3 +15,8 @@
 - Constraint: the target state must pass its entry gate before activation
 - Severity: high
 - Check: transition controller
+
+## Completion Checklist
+- [ ] Each rule names its source, trigger, and check.
+- [ ] Rules cover both happy path and rollback path constraints.
+- [ ] The next review stage can trace every gate to a rule.

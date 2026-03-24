@@ -38,6 +38,7 @@ export const DEPARTMENT_KEYS = [
 ];
 
 export const TASK_FILES = [
+  'AGENT.md',
   '00-intake/request.md',
   '00-intake/context.md',
   '00-intake/constraints.md',
@@ -83,7 +84,10 @@ export const TASK_FILES = [
 
 export const SUPPORT_FILES = [
   'shared/templates/task-workspace.template.md',
+  'shared/templates/AGENT.template.md',
   'shared/policies/department-write-scope.md',
+  'shared/policies/deliverable-contracts.md',
+  'shared/policies/agent-document-standard.md',
   'shared/prompts/department-prompts.md',
   'orchestrator/state-machine.md',
   'orchestrator/routing-rules.md',

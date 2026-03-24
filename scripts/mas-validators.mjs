@@ -10,28 +10,16 @@ import {
   TASK_FILES,
   WORKFLOW_STATES
 } from './mas-constants.mjs';
-import { validateStateEntryGate } from './mas-gates.mjs';
+import { deriveApprovedArtifacts } from './mas-approvals.mjs';
+import { DELIVERABLE_CONTRACTS, ORCHESTRATOR_CONTRACTS } from './mas-contracts.mjs';
+import { parseDecision, validateStateEntryGate } from './mas-gates.mjs';
 import { DEFAULT_CONSTRAINTS, DEFAULT_ROUTING_POLICY, STATE_DEPARTMENTS, STATE_TRANSITIONS } from './mas-policy.mjs';
-import { expectedApprovedArtifacts } from './mas-task-files.mjs';
 import { allowedWritePathsForState, arrayEquals, artifactPaths, isObject, resolveTaskFile, taskRoot, unique } from './mas-utils.mjs';
 
-export const CORE_MARKDOWN_SECTIONS = {
-  '01-spec/spec.md': [
-    '# Specification',
-    '## Task Goal',
-    '## Business Context',
-    '## Scope',
-    '## Inputs And Outputs',
-    '## Acceptance Criteria'
-  ],
-  '05-rules/rules.md': ['# Rules Catalog', '## Enforced Rules'],
-  '06-tests/test-cases.md': ['# Test Cases', '## Case List'],
-  '09-audit/review.md': ['# Audit Review', '## Review Scope', '## Findings', '## Decision', '## Follow-ups'],
-  'agent-log.md': ['# Agent Execution Log', '## Stage Records'],
-  'orchestrator/state-machine.md': ['# State Machine', '## Main Flow', '## Failure Recovery'],
-  'orchestrator/routing-rules.md': ['# Routing Rules', '## Peer Deliberation', '## Parallel Execution', '## Freeze Points'],
-  'orchestrator/role-permissions.md': ['# Role Permissions', '## Department Write Boundaries']
-};
+export const CORE_MARKDOWN_SECTIONS = Object.fromEntries(
+  Object.entries(DELIVERABLE_CONTRACTS).map(([relativePath, contract]) => [relativePath, contract.headings])
+);
+export const ORCHESTRATOR_MARKDOWN_SECTIONS = ORCHESTRATOR_CONTRACTS;
 
 async function fileExists(filePath) {
   try {
@@ -65,6 +53,33 @@ function validateRequiredHeadings(markdown, headings, label, errors) {
     if (!markdown.includes(heading)) {
       errors.push(`${label} is missing required heading: ${heading}`);
     }
+  }
+}
+
+function validateRequiredSnippets(markdown, snippets, label, errors) {
+  for (const snippet of snippets ?? []) {
+    if (!markdown.includes(snippet)) {
+      errors.push(`${label} is missing required marker: ${snippet}`);
+    }
+  }
+}
+
+function validateDecisionFields(relativePath, markdown, errors) {
+  const reviewFiles = [
+    '02-review/requirement-review.md',
+    '02-review/ui-review.md',
+    '02-review/api-review.md',
+    '02-review/test-review.md',
+    '09-audit/review.md'
+  ];
+
+  if (!reviewFiles.includes(relativePath)) {
+    return;
+  }
+
+  const decision = parseDecision(markdown);
+  if (!['pending', 'pass', 'reject'].includes(decision)) {
+    errors.push(`${relativePath} must declare Decision as pending, pass, or reject`);
   }
 }
 
@@ -234,10 +249,14 @@ async function validateState(state, manifest, taskId, rootDir, errors) {
   if (!isObject(state.approved_artifacts)) {
     errors.push('state.approved_artifacts must be an object');
   } else {
-    const expected = expectedApprovedArtifacts(state.current_state);
+    const expected = await deriveApprovedArtifacts({
+      rootDir,
+      taskId,
+      currentState: state.current_state
+    });
     for (const [key, expectedValue] of Object.entries(expected)) {
       if (state.approved_artifacts[key] !== expectedValue) {
-        errors.push(`state.approved_artifacts.${key} does not match ${state.current_state}`);
+        errors.push(`state.approved_artifacts.${key} does not match derived approvals for ${state.current_state}`);
       }
     }
   }
@@ -293,6 +312,16 @@ async function validateWorkspaceFiles(rootDir, taskId, errors) {
 
 async function validateMarkdownContracts(rootDir, taskId, errors) {
   for (const [relativePath, headings] of Object.entries(CORE_MARKDOWN_SECTIONS)) {
+    const absolutePath = resolveTaskFile(rootDir, taskId, relativePath);
+    const content = await readTextFile(absolutePath, relativePath, errors);
+    if (content) {
+      validateRequiredHeadings(content, headings, relativePath, errors);
+      validateRequiredSnippets(content, DELIVERABLE_CONTRACTS[relativePath]?.snippets, relativePath, errors);
+      validateDecisionFields(relativePath, content, errors);
+    }
+  }
+
+  for (const [relativePath, headings] of Object.entries(ORCHESTRATOR_MARKDOWN_SECTIONS)) {
     const absolutePath = relativePath.startsWith('orchestrator/')
       ? join(rootDir, ...relativePath.split('/'))
       : resolveTaskFile(rootDir, taskId, relativePath);
