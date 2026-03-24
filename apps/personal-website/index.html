@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MAS 项目总览</title>
+    <meta
+      name="description"
+      content="用于理解 Codex 三省六部项目整体运转过程的可视化说明板，展示制度面、状态面、事件流、状态机、角色分工与当前仓库快照。"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <nav class="topbar">
+          <div class="brand">
+            <span class="brand-mark">MAS V1</span>
+            <span class="brand-copy">三省六部项目总览</span>
+          </div>
+          <div class="topbar-links">
+            <a href="#overview">总览</a>
+            <a href="#flow">流程</a>
+            <a href="#state-machine">状态机</a>
+            <a href="#truth">真相源</a>
+            <a href="#runtime">运行时</a>
+            <a href="#verify">验证</a>
+          </div>
+        </nav>
+
+        <section class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">MAS Dashboard</p>
+            <h1>项目整体运转总览</h1>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#flow">流程</a>
+              <a class="button button-secondary" href="#runtime">运行态</a>
+            </div>
+          </div>
+
+          <aside class="hero-panel">
+            <article class="signal-card signal-card-strong">
+              <p class="signal-title">项目本体</p>
+              <h2>制度与状态内核</h2>
+              <p>仓库内是真相源，仓库外做调度与执行。</p>
+            </article>
+            <article class="signal-card">
+              <p class="signal-title">当前聚焦任务</p>
+              <h3 id="spotlight-title">加载中</h3>
+              <p id="spotlight-goal">加载中</p>
+            </article>
+          </aside>
+        </section>
+
+        <section class="hero-metrics" id="hero-metrics">
+          <article>
+            <span>任务总数</span>
+            <strong id="metric-total">加载中</strong>
+          </article>
+          <article>
+            <span>已完成任务</span>
+            <strong id="metric-completed">加载中</strong>
+          </article>
+          <article>
+            <span>待推进任务</span>
+            <strong id="metric-queued">加载中</strong>
+          </article>
+          <article>
+            <span>当前焦点状态</span>
+            <strong id="metric-state">加载中</strong>
+          </article>
+        </section>
+      </header>
+
+      <main>
+        <section class="section" id="overview">
+          <div class="section-inner section-panel">
+            <div class="section-heading section-heading-compact">
+              <p class="eyebrow">Overview</p>
+              <h2>4 个观察面</h2>
+            </div>
+            <div class="focus-grid">
+              <article class="focus-card">
+                <p class="focus-kicker">制度面</p>
+                <h3>`manifest.json`</h3>
+                <p>定义部门、产物、路由和约束。</p>
+              </article>
+              <article class="focus-card">
+                <p class="focus-kicker">状态面</p>
+                <h3>`state.json` + `runtime/control.json`</h3>
+                <p>记录阶段、负责人、写入范围和阻塞。</p>
+              </article>
+              <article class="focus-card">
+                <p class="focus-kicker">证据面</p>
+                <h3>评审 / 审计 / 事件流</h3>
+                <p>人类可读文档加机器可读轨迹。</p>
+              </article>
+              <article class="focus-card">
+                <p class="focus-kicker">执行面</p>
+                <h3>调度器与驱动</h3>
+                <p>负责选任务、加租约、执行和写回。</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="flow">
+          <div class="section-inner flow-layout">
+            <div class="section-heading section-heading-compact">
+              <p class="eyebrow">Flow</p>
+              <h2>主流程</h2>
+            </div>
+
+            <div class="flow-shell">
+              <article class="flow-card">
+                <div class="flow-lane">
+                  <span class="flow-role">皇帝</span>
+                  <div class="flow-node featured">
+                    <strong>提出需求</strong>
+                    <span>只描述目标和约束，不亲自推进每一步。</span>
+                  </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-lane">
+                  <span class="flow-role">中书</span>
+                  <div class="flow-node">
+                    <strong>规格起草</strong>
+                    <span>把需求整理成规格、验收标准、非目标和上下文。</span>
+                  </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-lane">
+                  <span class="flow-role">门下</span>
+                  <div class="flow-node gate">
+                    <strong>需求评审</strong>
+                    <span>只给通过或驳回结论。驳回会回流到规格补写。</span>
+                  </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-grid">
+                  <div class="flow-lane">
+                    <span class="flow-role">吏部</span>
+                    <div class="flow-node">
+                      <strong>任务拆分</strong>
+                      <span>拆工作流、依赖和责任归属。</span>
+                    </div>
+                  </div>
+                  <div class="flow-lane">
+                    <span class="flow-role">礼部</span>
+                    <div class="flow-node">
+                      <strong>原型设计</strong>
+                      <span>先固化页面结构与交互，再让后续设计继续。</span>
+                    </div>
+                  </div>
+                  <div class="flow-lane">
+                    <span class="flow-role">门下</span>
+                    <div class="flow-node gate">
+                      <strong>UI 评审</strong>
+                      <span>冻结原型方向，驳回则回流到礼部。</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-grid">
+                  <div class="flow-lane">
+                    <span class="flow-role">工部</span>
+                    <div class="flow-node">
+                      <strong>API / 设计 / 构建</strong>
+                      <span>产出契约、数据模型、迁移与真实交付。</span>
+                    </div>
+                  </div>
+                  <div class="flow-lane">
+                    <span class="flow-role">刑部</span>
+                    <div class="flow-node">
+                      <strong>规则 / 测试 / 验证</strong>
+                      <span>定义门禁、用例和验证结果。</span>
+                    </div>
+                  </div>
+                  <div class="flow-lane">
+                    <span class="flow-role">门下</span>
+                    <div class="flow-node gate">
+                      <strong>API / 测试评审</strong>
+                      <span>工部与刑部都要经过评审门禁，才能进入下一步。</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-lane">
+                  <span class="flow-role">御史台</span>
+                  <div class="flow-node gate">
+                    <strong>审计复核</strong>
+                    <span>治理偏差回退到规划，执行偏差回退到构建。</span>
+                  </div>
+                </div>
+
+                <div class="flow-arrow">↓</div>
+
+                <div class="flow-lane">
+                  <span class="flow-role">尚书</span>
+                  <div class="flow-node featured">
+                    <strong>完成归档</strong>
+                    <span>状态、事件、评审和审计证据全部闭环。</span>
+                  </div>
+                </div>
+              </article>
+
+              <aside class="flow-side">
+                <article class="content-card">
+                  <h3>关键规则</h3>
+                  <p>门下只评审，御史台独立审计，尚书唯一总控。</p>
+                </article>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="state-machine">
+          <div class="section-inner section-panel">
+            <div class="section-heading section-heading-compact">
+              <p class="eyebrow">State Machine</p>
+              <h2>状态机</h2>
+            </div>
+            <div class="state-machine-grid" id="state-machine-grid"></div>
+          </div>
+        </section>
+
+        <section class="section" id="truth">
+          <div class="section-inner section-panel">
+            <div class="section-heading section-heading-compact">
+              <p class="eyebrow">Truth Source</p>
+              <h2>真相源</h2>
+            </div>
+            <div class="truth-grid" id="truth-grid"></div>
+          </div>
+        </section>
+
+        <section class="section" id="runtime">
+          <div class="section-inner section-panel">
+            <div class="section-heading section-heading-compact">
+              <p class="eyebrow">Runtime</p>
+              <h2>运行态</h2>
+            </div>
+            <div class="runtime-layout">
+              <div class="runtime-main">
+                <article class="runtime-spotlight-card" id="runtime-spotlight"></article>
+                <div class="runtime-board" id="task-board"></div>
+              </div>
+              <aside class="runtime-side">
+                <article class="content-card">
+                  <h3>当前阶段意图</h3>
+                  <p id="intent-summary">加载中</p>
+                </article>
+                <article class="content-card">
+                  <h3>可人工介入动作</h3>
+                  <div class="chips" id="human-actions"></div>
+                </article>
+                <article class="content-card">
+                  <h3>部门职责索引</h3>
+                  <div class="department-grid" id="department-grid"></div>
+                </article>
+              </aside>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" id="events">
+          <div class="section-inner section-panel">
+            <div class="section-heading section-heading-compact">
+              <p class="eyebrow">Event Stream</p>
+              <h2>最近动作</h2>
+            </div>
+            <div class="timeline-list" id="event-stream"></div>
+          </div>
+        </section>
+
+        <section class="section" id="verify">
+          <div class="section-inner section-panel">
+            <div class="section-heading section-heading-compact">
+              <p class="eyebrow">Verify</p>
+              <h2>常用命令</h2>
+            </div>
+            <div class="command-grid" id="command-grid"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

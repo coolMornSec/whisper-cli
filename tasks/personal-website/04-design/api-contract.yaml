@@ -1,11 +1,8 @@
 openapi: 3.1.0
 info:
-  title: MAS 任务工作区契约
+  title: External Driver Contract
   version: 1.0.0
 paths:
-  /tasks/{taskId}/state:
+  /tasks/{taskId}/board:
     get:
-      summary: 读取任务运行时状态
-  /tasks/{taskId}/manifest:
-    get:
-      summary: 读取任务静态清单
+      summary: 获取任务看板

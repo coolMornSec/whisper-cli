@@ -1,7 +1,7 @@
 # 依赖关系图
 
 ## 关键路径
-- 需求评审 -> 规划 -> 原型 -> API 评审 -> 规则与测试 -> 构建 -> 验证 -> 审计
+- SPEC_DRAFT -> REQUIREMENT_REVIEW -> TASK_PLANNED -> DONE
 
 ## 并行说明
-- 只有在 TEST_REVIEW 通过且允许路径更新后，构建与验证才能并行推进。
+- 当前样例以顺序推进为主。

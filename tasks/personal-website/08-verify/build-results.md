@@ -1,4 +1,5 @@
 # 构建结果
 
 ## 验证摘要
-- 确认任务在具备必需产物后，可以从 BUILD_IN_PROGRESS 推进到 INTEGRATION_VERIFY。
+- 本地服务可正确返回静态页面、样式、脚本和 `/api/overview` 等运行时接口。
+- 前端页面已绑定当前仓库中的 `personal-website` 任务和任务看板数据。

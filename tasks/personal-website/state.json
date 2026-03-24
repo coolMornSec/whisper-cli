@@ -1,26 +1,21 @@
 {
   "task_id": "personal-website",
-  "current_state": "INTAKE",
-  "previous_state": null,
-  "owner": "spec-agent",
+  "current_state": "DONE",
+  "previous_state": "AUDIT_REVIEW",
+  "owner": "orchestrator-agent",
   "approved_artifacts": {
-    "spec": false,
-    "prototype": false,
-    "api_contract": false,
-    "rules": false,
-    "tests": false,
-    "build": false,
-    "verification": false,
-    "audit": false
+    "spec": true,
+    "prototype": true,
+    "api_contract": true,
+    "rules": true,
+    "tests": true,
+    "build": true,
+    "verification": true,
+    "audit": true
   },
   "blocked_by": [],
-  "active_agents": [
-    "spec-agent"
-  ],
-  "allowed_write_paths": [
-    "00-intake/",
-    "01-spec/"
-  ],
+  "active_agents": [],
+  "allowed_write_paths": [],
   "risks": [],
-  "updated_at": "2026-03-24T10:30:00+08:00"
+  "updated_at": "2026-03-24T14:59:58.907Z"
 }
