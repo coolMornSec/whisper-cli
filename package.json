@@ -1,0 +1,12 @@
+{
+  "name": "whisper-cli",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/task-docs.test.mjs",
+    "workflow:validate": "node scripts/task-docs.mjs validate --task-id whisper-cli-ai-workflow",
+    "workflow:scaffold": "node scripts/task-docs.mjs scaffold --task-id example-task --title \"Example Task\" --goal \"Create a new task workspace through the MAS V1 scaffold\"",
+    "workflow:transition": "node scripts/task-docs.mjs transition"
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whisper-cli.local/schemas/state.schema.json",
+  "title": "MAS Task State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "current_state",
+    "previous_state",
+    "owner",
+    "approved_artifacts",
+    "blocked_by",
+    "active_agents",
+    "allowed_write_paths",
+    "risks",
+    "updated_at"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "current_state": {
+      "$ref": "#/$defs/workflowState"
+    },
+    "previous_state": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/workflowState"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "approved_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spec",
+        "prototype",
+        "api_contract",
+        "rules",
+        "tests",
+        "build",
+        "verification",
+        "audit"
+      ],
+      "properties": {
+        "spec": { "type": "boolean" },
+        "prototype": { "type": "boolean" },
+        "api_contract": { "type": "boolean" },
+        "rules": { "type": "boolean" },
+        "tests": { "type": "boolean" },
+        "build": { "type": "boolean" },
+        "verification": { "type": "boolean" },
+        "audit": { "type": "boolean" }
+      }
+    },
+    "blocked_by": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "active_agents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "allowed_write_paths": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/risk"
+      }
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "workflowState": {
+      "type": "string",
+      "enum": [
+        "INTAKE",
+        "SPEC_DRAFT",
+        "REQUIREMENT_REVIEW",
+        "TASK_PLANNED",
+        "PROTOTYPE_DRAFT",
+        "UI_REVIEW",
+        "API_DESIGNED",
+        "API_REVIEW",
+        "RULES_FROZEN",
+        "TESTS_DRAFTED",
+        "TEST_REVIEW",
+        "BUILD_IN_PROGRESS",
+        "INTEGRATION_VERIFY",
+        "AUDIT_REVIEW",
+        "REQUIREMENT_REJECTED",
+        "UI_REJECTED",
+        "API_REJECTED",
+        "TEST_REJECTED",
+        "VERIFY_FAILED",
+        "AUDIT_FAILED",
+        "DONE"
+      ]
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "level",
+        "summary",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "open",
+            "mitigated",
+            "accepted"
+          ]
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

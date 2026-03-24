@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://whisper-cli.local/schemas/manifest.schema.json",
+  "title": "MAS Task Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "title",
+    "priority",
+    "goal",
+    "human_approvals_required",
+    "departments",
+    "artifacts",
+    "routing_policy",
+    "constraints"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "human_approvals_required": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "$ref": "state.schema.json#/$defs/workflowState"
+      }
+    },
+    "departments": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zhongshu",
+        "menxia",
+        "shangshu",
+        "libu_task_breakdown",
+        "libu_prototype",
+        "gongbu",
+        "xingbu",
+        "yushitai"
+      ],
+      "properties": {
+        "zhongshu": {
+          "$ref": "#/$defs/agentList"
+        },
+        "menxia": {
+          "$ref": "#/$defs/agentList"
+        },
+        "shangshu": {
+          "$ref": "#/$defs/agentList"
+        },
+        "libu_task_breakdown": {
+          "$ref": "#/$defs/agentList"
+        },
+        "libu_prototype": {
+          "$ref": "#/$defs/agentList"
+        },
+        "gongbu": {
+          "$ref": "#/$defs/agentList"
+        },
+        "xingbu": {
+          "$ref": "#/$defs/agentList"
+        },
+        "yushitai": {
+          "$ref": "#/$defs/agentList"
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "spec",
+        "prototype",
+        "api_contract",
+        "rules",
+        "tests",
+        "audit"
+      ],
+      "properties": {
+        "spec": {
+          "$ref": "#/$defs/pathString"
+        },
+        "prototype": {
+          "$ref": "#/$defs/pathString"
+        },
+        "api_contract": {
+          "$ref": "#/$defs/pathString"
+        },
+        "rules": {
+          "$ref": "#/$defs/pathString"
+        },
+        "tests": {
+          "$ref": "#/$defs/pathString"
+        },
+        "audit": {
+          "$ref": "#/$defs/pathString"
+        }
+      }
+    },
+    "routing_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "peer_deliberation_states",
+        "parallel_execution_states",
+        "serialized_gates",
+        "freeze_points"
+      ],
+      "properties": {
+        "peer_deliberation_states": {
+          "$ref": "#/$defs/stateList"
+        },
+        "parallel_execution_states": {
+          "$ref": "#/$defs/stateList"
+        },
+        "serialized_gates": {
+          "$ref": "#/$defs/stateList"
+        },
+        "freeze_points": {
+          "$ref": "#/$defs/stateList"
+        }
+      }
+    },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "prototype_first",
+        "api_follows_prototype",
+        "tests_before_code",
+        "deployment_in_scope"
+      ],
+      "properties": {
+        "prototype_first": {
+          "type": "boolean"
+        },
+        "api_follows_prototype": {
+          "type": "boolean"
+        },
+        "tests_before_code": {
+          "type": "boolean"
+        },
+        "deployment_in_scope": {
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "agentList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "pathString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "stateList": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "state.schema.json#/$defs/workflowState"
+      }
+    }
+  }
+}

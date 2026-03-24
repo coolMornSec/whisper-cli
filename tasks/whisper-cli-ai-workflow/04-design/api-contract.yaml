@@ -1,0 +1,11 @@
+openapi: 3.1.0
+info:
+  title: MAS Task Workspace Contract
+  version: 1.0.0
+paths:
+  /tasks/{taskId}/state:
+    get:
+      summary: Read task runtime state
+  /tasks/{taskId}/manifest:
+    get:
+      summary: Read task static manifest

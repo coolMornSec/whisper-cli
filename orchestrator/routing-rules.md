@@ -1,0 +1,17 @@
+# Routing Rules
+
+## Peer Deliberation
+- SPEC_DRAFT
+- REQUIREMENT_REVIEW
+- TASK_PLANNED
+- UI_REVIEW
+- API_REVIEW
+
+## Parallel Execution
+- BUILD_IN_PROGRESS
+- INTEGRATION_VERIFY
+
+## Freeze Points
+- UI_REVIEW
+- API_REVIEW
+- TEST_REVIEW
